@@ -23,6 +23,7 @@ public class ViewGUI extends JFrame implements IViewGUI {
   private JComboBox<String> portfolioFunctions, dateOptions;
 
   public ViewGUI() {
+    this.valueText = new JTextField();
     cardLayout = new CardLayout();
     cardPanel = new JPanel(cardLayout);
     startPanel = this.createStartScreen();
@@ -413,5 +414,27 @@ public class ViewGUI extends JFrame implements IViewGUI {
       cardLayout.show(cardPanel, "comp");
     }
 
+  }
+
+  @Override
+  public void sellError() {
+    this.buyStatus = new JLabel("Error! Trying to remove more shares than added");
+    this.sellScreen.add(this.buyStatus);
+    this.sellScreen.add(this.back);
+    cardPanel.add(sellScreen, "sell");
+    cardLayout.show(cardPanel, "sell");
+  }
+
+  @Override
+  public void showPortfolioValue(String str) {
+    this.valueText.setText(str);
+    this.valueScreen.setLayout(new FlowLayout());
+    this.valueScreen.add(this.valueText);
+    Dimension maxSize = new Dimension(500, 300);
+    valueScreen.setMaximumSize(maxSize);
+    valueScreen.setPreferredSize(maxSize);
+    cardPanel.add(valueScreen, "value");
+    cardLayout.show(cardPanel, "value");
+    System.out.println("Value: " + str);
   }
 }

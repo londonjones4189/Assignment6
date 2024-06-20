@@ -52,7 +52,7 @@ public interface IModelMax extends IModel {
    * @throws IOException if the input/output is missing.
    */
   void sell(String portfolioname, String ticker, double numShares, LocalDate date)
-          throws IOException;
+          throws IOException, ParserConfigurationException, TransformerException;
 
   /**
    * Allows the user to sell stocks from their portfolio on a specific date.

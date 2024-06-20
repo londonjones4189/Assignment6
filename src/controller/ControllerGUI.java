@@ -9,11 +9,7 @@ import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
-
-import model.IModel;
 import model.IModelMax;
-import model.Pair;
-import model.Stock;
 import view.IViewGUI;
 
 public class ControllerGUI implements ActionListener {
@@ -50,7 +46,9 @@ public class ControllerGUI implements ActionListener {
           this.createPortfolio();
         } catch (ParserConfigurationException
                  | TransformerException
-                 | IOException ex) {
+                 | IOException
+                 | IllegalArgumentException ex) {
+          this.view.portfolioNameError();
         }
         break;
       case "Enter Portfolio":
@@ -78,7 +76,7 @@ public class ControllerGUI implements ActionListener {
           this.view.setListenerBuy(this);
           this.view.stopListeningEnter(this);
         } else {
-          this.view.setListenerEnter(this);
+//          this.view.setListenerEnter(this);
           this.view.tickerNotFound();
         }
         break;
@@ -86,9 +84,12 @@ public class ControllerGUI implements ActionListener {
         if (this.validNum()) {
           try {
             this.currentDate = LocalDate.parse(this.view.getDate());
-//            this.model.buy(this.currentPortfolio, this.currentTicker,
-//                    this.numShares, this.currentDate);
-          } catch (DateTimeParseException ignored) {
+            this.model.buy(this.currentPortfolio, this.currentTicker,
+                    this.numShares, this.currentDate);
+          } catch (DateTimeParseException
+                   | IOException
+                   | ParserConfigurationException
+                   | TransformerException ignored) {
           }
           this.view.editingPortfolio();
           this.view.setListenerPortfolioEdit(this);
@@ -101,13 +102,17 @@ public class ControllerGUI implements ActionListener {
         if (this.validNum()) {
           try {
             this.currentDate = LocalDate.parse(this.view.getDate());
-//            this.model.sell(this.currentPortfolio, this.currentTicker,
-//                    this.numShares, this.currentDate);
-          } catch (DateTimeParseException ignored) {
+            this.model.sell(this.currentPortfolio, this.currentTicker,
+                    this.numShares, this.currentDate);
+            this.view.editingPortfolio();
+            this.view.setListenerPortfolioEdit(this);
+            this.view.sellStatus();
+          } catch (RuntimeException ignored) {
+            this.view.sellError();
+          } catch (IOException
+                   | ParserConfigurationException
+                   | TransformerException ignored) {
           }
-          this.view.editingPortfolio();
-          this.view.setListenerPortfolioEdit(this);
-          this.view.sellStatus();
         } else {
           this.view.invalidNum();
         }
@@ -117,9 +122,7 @@ public class ControllerGUI implements ActionListener {
         this.currentDate = LocalDate.parse(this.view.getDate());
         // Pair<String, String> newPair2
         if (this.currentFuction.equals("Portfolio Value")) {
-          this.view.showComputeResults(this.model
-                  .distrubtion(this.currentDate, this.currentPortfolio),
-                  this.currentFuction);
+          this.view.showPortfolioValue(this.model.getValue(this.currentPortfolio, this.currentDate));
         } else {
           this.view.showComputeResults(this.model
                   .composition(this.currentDate, this.currentPortfolio),
@@ -150,12 +153,14 @@ public class ControllerGUI implements ActionListener {
         if (this.nameExists()) {
           System.out.println("Buy stocks");
         }
+        break;
       case "Sell stocks":
         this.view.sellStocks();
         this.view.setListenerEnter(this);
         if (this.nameExists()) {
           System.out.println("Sell stocks");
         }
+        break;
       case "Portfolio Value":
         this.view.portfolioValue();
         this.view.setListenerEnter(this);
@@ -176,11 +181,10 @@ public class ControllerGUI implements ActionListener {
       if (name.equals(newName)) {
         this.view.portfolioNameError();
         break;
-      } else {
-        this.model.createPortfolio(newName);
-        this.view.portfolioNameSuccess(newName);
       }
     }
+    this.model.createPortfolio(newName);
+    this.view.portfolioNameSuccess(newName);
   }
 
   private boolean nameExists() {

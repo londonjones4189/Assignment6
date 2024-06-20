@@ -77,4 +77,8 @@ public interface IViewGUI {
   void stopListeningPortfolio(ControllerGUI controller);
 
   void showComputeResults(Pair<String, String> result, String function);
+
+  void sellError();
+
+  void showPortfolioValue(String str);
 }

@@ -355,6 +355,8 @@ public class ControllerMax extends ControllerImpl {
       this.view.sellCreated(ticker2, numShares2);
     } catch (NullPointerException e) {
       this.view.invalidInput();
+    } catch (ParserConfigurationException
+             | TransformerException ignored) {
     }
   }
 
@@ -370,7 +372,9 @@ public class ControllerMax extends ControllerImpl {
       this.model.sell(name, ticker2, numShares2, date);
       // this.view.printResults("Sold",
       //  , 0);
-    } catch (IllegalArgumentException | IOException e) {
+    } catch (IllegalArgumentException | IOException
+            | ParserConfigurationException
+             | TransformerException ignored) {
       this.view.invalidInput();
     }
   }

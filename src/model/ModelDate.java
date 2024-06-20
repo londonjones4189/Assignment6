@@ -59,13 +59,15 @@ public class ModelDate extends ModelImpl implements IModelMax {
    * Updates the list of portfolios based on the list of saved portfolios
    * from previous times the program was run.
    */
-  public void updatePortfolios() {
+  public void updatePortfolios() throws IOException {
     File folder = new File("res/portfolios/");
     File[] files = folder.listFiles();
 
     for (File file : files) {
-      if (file.isFile() && file.getName().toLowerCase().endsWith(".xml")) {
-        IPortfolioMax portfolio = this.parseXML(file);
+      if (file.isFile() && file.getName().endsWith(".xml")) {
+        IPortfolioMax portfolio = this.parseXML(file, file.getName()
+                .toString()
+                .substring(0, file.getName().length() - 4));
         portfolios.put(portfolio.getPortfolioName(), portfolio);
       }
     }
@@ -85,10 +87,12 @@ public class ModelDate extends ModelImpl implements IModelMax {
    * @throws IOException if the input/output is missing.
    */
   public void sell(String portfolioname, String ticker, double numShares, LocalDate date)
-          throws IOException {
+          throws IOException, ParserConfigurationException, TransformerException {
     IPortfolioMax portfolio = this.portfolios.get(portfolioname);
     Stock stock = findTicker(ticker);
-    portfolio.removeStockNew(date, stock, numShares);
+    IPortfolioMax newPort = portfolio.removeStockNew(date, stock, numShares);
+    newPort.generatePortfolioXML();
+    portfolios.put(portfolioname, newPort);
   }
 
 
@@ -198,6 +202,24 @@ public class ModelDate extends ModelImpl implements IModelMax {
     if (result != 1) {
       throw new IllegalArgumentException("Values must add up too 1.0(100%)");
     }
+  }
+
+  @Override
+  public List<String> getPortfolioList() {
+    List<String> strList = new ArrayList<String>();
+    for (Map.Entry<String, IPortfolioMax> entry : this.portfolios.entrySet()) {
+      strList.add(entry.getKey());
+    }
+    return strList;
+  }
+
+  @Override
+  // checks if the portfolio is in the given list
+  public IPortfolio findPortfolio(String name) throws IllegalArgumentException {
+    if (!portfolios.containsKey(name)) {
+      throw new IllegalArgumentException("Portfolio " + name + " not found");
+    }
+    return portfolios.get(name);
   }
 }
 

@@ -73,7 +73,7 @@ public class ModelImpl implements IModel {
     List<String> portfolioNameList = this.getPreviousPortfolio();
     for (String portfolioName : portfolioNameList) {
       File file = new File("res/portfolios/" + portfolioName + ".xml");
-      portfolioList.put(portfolioName, this.parseXML(file));
+      portfolioList.put(portfolioName, this.parseXML(file, portfolioName));
     }
     return portfolioList;
   }
@@ -84,13 +84,13 @@ public class ModelImpl implements IModel {
    * @param file the file where the profile is stored.
    * @return the portfolio saved in the program.
    */
-  protected IPortfolioMax parseXML(File file) {
+  protected IPortfolioMax parseXML(File file, String portfolioName) throws IOException {
     try {
       DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
       DocumentBuilder builder = factory.newDocumentBuilder();
       Document document = builder.parse(new FileInputStream(file));
       Element root = document.getDocumentElement();
-      String portfolioName = getElementValue(root, "name");
+//      String portfolioName = getElementValue(root, "portfolioName");
       HashMap<LocalDate, List<Transaction>> log = new HashMap<>();
       List<LocalDate> datesInPortfolio = this.datesInSavedPortfolio(document);
       for (LocalDate date : datesInPortfolio) {
