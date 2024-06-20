@@ -45,7 +45,7 @@ public class Main {
 //    IViewMax view = new ViewMax(ap);
     IViewGUI gui = new ViewGUI();
     ControllerGUI controller = new ControllerGUI(model, gui);
-//    controller.startProgram();
+    controller.startProgram();
 //    IPortfolioMax test = new PortfolioDate("test");
 //    model.createPortfolio("test");
 //    model.findPortfolio("test");

@@ -85,11 +85,12 @@ public class PortfolioDate implements IPortfolioMax {
 
     if (transLog.containsKey(date)) {
       entry.addAll(transLog.get(date));
-
     }
+
     if (!datesSoFar.isEmpty()) {
       Transaction trans = new Transaction(stock, shares
               + this.mostRecentTrans(datesSoFar, stock));
+      entry.removeIf(t -> t.getStock().equals(stock));
       entry.add(trans);
     } else {
       Transaction trans = new Transaction(stock, shares);
