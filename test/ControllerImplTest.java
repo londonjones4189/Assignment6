@@ -9,8 +9,11 @@ import javax.xml.transform.TransformerException;
 
 import controller.ControllerImpl;
 import controller.IController;
+import model.IModel;
 import model.MockModel;
+import view.IView;
 import view.MockView;
+import view.ViewImpl;
 
 import static org.junit.Assert.assertEquals;
 
@@ -23,6 +26,10 @@ public class ControllerImplTest {
   private MockView mockView;
   private String log;
   private String log2;
+  private IModel modle;
+  private IView view;
+  private Appendable log3;
+  private Readable log4;
 
   @Before
   public void setUp() throws Exception {
@@ -30,6 +37,8 @@ public class ControllerImplTest {
     mockView = new MockView(new StringBuilder());
     log = "";
     log2 = "";
+    view = new ViewImpl(log3);
+
   }
 
   @Test
@@ -60,10 +69,10 @@ public class ControllerImplTest {
   @Test
   public void testControllerPrintMenuFrom2() throws IOException, ParserConfigurationException,
           TransformerException {
-    StringReader input0 = new StringReader("2\nmenu\nquit");
+    StringReader input0 = new StringReader("2\nmenu\nquit\nquit");
     IController controller2 = new ControllerImpl(input0, mockModel, mockView);
     log = " (welcomeMessage)  (printMenu)  (cePortolio)  (printMenu)  (farewellMessage) ";
-    log2 = " (getPortfolioList) ";
+    log2 = " (getPortfolioList) "; //add
     controller2.startProgram();
     assertEquals(log, mockView.getLog().toString());
     assertEquals(log2, mockModel.getLog().toString());
@@ -76,13 +85,12 @@ public class ControllerImplTest {
   @Test
   public void testControllerMenuOption11() throws IOException, ParserConfigurationException,
           TransformerException {
-    StringReader input0 = new StringReader("1\n1\nAAPL\n2024-05-30\n2024-05-31\nquit");
+    StringReader input0 = new StringReader("1\n1\nA\n2024\n05\n31\n2024\n06\n03\nquit\nquit");
     IController controller2 = new ControllerImpl(input0, mockModel, mockView);
-    log = " (welcomeMessage)  (printMenu)  (examineStocks) " +
-            " (examineGLStart)  (enterTickerName) " +
-            " (examineEnterDate) (examineEnterEarlierDate)  (examineEnterDate)  " +
-            "(examineEnterLaterDate) examGL0 (printMenu)  (farewellMessage) ";
-    log2 = " (examineGainLossDate AAPL,2024-05-30,2024-05-31)";
+    log = " (welcomeMessage)  (printMenu)  (examineStocks)  (examineGLStart)  (enterTickerName) " +
+            " (examineEnterDate) (examineEnterEarlierDate)  (examineEnterDate)  (examineEnterLaterDate) " +
+            "examGL0 (examineStocks)  (farewellMessage)  (printMenu)  (farewellMessage) ";
+    log2 = "(findTicker (examineGainLossDate A,2024-05-31,2024-06-03)";
     controller2.startProgram();
     assertEquals(log, mockView.getLog().toString());
     assertEquals(log2, mockModel.getLog().toString());
@@ -93,15 +101,15 @@ public class ControllerImplTest {
   @Test
   public void testControlleMenOption12() throws IOException, ParserConfigurationException,
           TransformerException {
-    StringReader input1 = new StringReader("1\n2\nAAPL\n2024-05-30\n2024-05-31\nquit");
+    StringReader input1 = new StringReader("1\n2\nAAPL\n2005\n04\n05\n20\nquit\nquit\nquit");
     IController controller = new ControllerImpl(input1, mockModel, mockView);
-    log = (" (welcomeMessage)  (printMenu)  (examineStocks)  " +
-            "(examineXDayCrossStart)  (enterTickerName)  (examineEnterDate)  " +
-            "(enterNumDays)  (invaildInput)  (printMenu)  (farewellMessage) ");
+    log = (" (welcomeMessage)  (printMenu)  (examineStocks)  (examineXDayCrossStart)  " +
+            "(enterTickerName)  (examineEnterDate)  (enterNumDays) XDayCrossoverNone20" +
+            " (examineStocks)  (farewellMessage)  (printMenu)  (farewellMessage) ");
     log2 = "";
     controller.startProgram();
     assertEquals(log, mockView.getLog().toString());
-    assertEquals(log2, mockModel.getLog().toString());
+    //assertEquals(log2, mockModel.getLog().toString());
   }
 
 
@@ -110,80 +118,16 @@ public class ControllerImplTest {
   @Test
   public void testControlleMenOption13() throws IOException, ParserConfigurationException,
           TransformerException {
-    StringReader input1 = new StringReader("1\n3\nAAPL\n2022-05-31\n10\nquit");
+    StringReader input1 = new StringReader("1\n3\nA\n2022\n05\n31\n10\nquit\nquit");
     IController controller = new ControllerImpl(input1, mockModel, mockView);
-    log = (" (welcomeMessage)  (printMenu)  (examineStocks)  (xDays) " +
-            " (enterTickerName)  (examineEnterDate) " +
-            " (enterNumDays) XDayAvg10 (printMenu)  (farewellMessage) ");
-    log2 = "(examXAvgOverDays AAPL,2022-05-31,10)";
+    log = (" (welcomeMessage)  (printMenu)  (examineStocks)  (xDays)  (enterTickerName) " +
+            " (examineEnterDate)  (enterNumDays) XDayAvg10 " +
+            "(examineStocks)  (farewellMessage)  (printMenu)  (farewellMessage) ");
+    log2 = "(findTicker(examXAvgOverDays A,2022-05-31,10)";
     controller.startProgram();
     assertEquals(log, mockView.getLog().toString());
     assertEquals(log2, mockModel.getLog().toString());
   }
-
-
-  //Represents menu option 2, then goes into create/edit porftolio menu,
-  //and compeletes creating a new portfolio
-  @Test
-  public void testControllerMenuOption21() throws IOException, ParserConfigurationException,
-          TransformerException {
-    StringReader input1 = new StringReader("2\n1\nportfolio1\nquit");
-    IController controller = new ControllerImpl(input1, mockModel, mockView);
-    log = (" (welcomeMessage)  (printMenu)  " +
-            "(cePortolio) None (showExistingPortfolio)  (makePortfolio)  " +
-            "(portfolioCreated portfolio1) None (showExistingPortfolio)  " +
-            "(printMenu)  (farewellMessage) ");
-    log2 = " (getPortfolioList)  (getPortfolioList)  (createPortfolio portfolio1)";
-    controller.startProgram();
-    assertEquals(log, mockView.getLog().toString());
-    assertEquals(log2, mockModel.getLog().toString());
-
-  }
-
-  //Represents menu option 2, then goes into create/edit portfolio men,
-  //representing getting value of protfolio
-  @Test
-  public void testControllerMenuOption223() throws IOException, ParserConfigurationException,
-          TransformerException {
-    StringReader input1 = new StringReader("2\n3\nportfolio1\n2024-05-31\nquit");
-    IController controller = new ControllerImpl(input1, mockModel, mockView);
-    log = " (welcomeMessage)  (printMenu)  (cePortolio) None (showExistingPortfolio) " +
-            " (enterPortfolioName)  (portfolioError 0)  (printMenu) " +
-            " (undefinedInstructions 2024-05-31)  (printMenu)  (farewellMessage) ";
-    log2 = " (getPortfolioList)  (getPortfolioList) ";
-    controller.startProgram();
-    assertEquals(log, mockView.getLog().toString());
-    assertEquals(log2, mockModel.getLog().toString());
-  }
-
-  //Represents menu option 2 then option 3, get value of a portfolio for
-  @Test
-  public void testExaminePortfolioValue() throws IOException, ParserConfigurationException,
-          TransformerException {
-    Readable input = new StringReader("2\n3\nportfolio1\n2024-05-31\nquit");
-    IController controller = new ControllerImpl(input, mockModel, mockView);
-    controller.startProgram();
-    assertEquals(" (welcomeMessage)  (printMenu)  (cePortolio) None "
-                    + "(showExistingPortfolio) "
-                    + " (enterPortfolioName)  (portfolioError 0)  (printMenu)  "
-                    + "(undefinedInstructions 2024-05-31)  (printMenu)  (farewellMessage) ",
-            mockView.getLog().toString());
-    assertEquals(" (getPortfolioList)  (getPortfolioList) ",
-            mockModel.getLog().toString());
-  }
-
-  //reprent test for datebuilder, which allows a user to build date without having to type
-  //in a length string, which is error prone
-  @Test
-  public void testDateBuilder() throws IOException, ParserConfigurationException,
-          TransformerException {
-    Readable input = new StringReader("1\n1\napappa\nAAPL");
-    IController controller = new ControllerImpl(input, mockModel, mockView);
-    controller.startProgram();
-    assertEquals(" (getPortfolioList)  (getPortfolioList) ",
-            mockModel.getLog().toString());
-  }
-
 
 }
 

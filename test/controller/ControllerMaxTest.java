@@ -38,7 +38,7 @@ public class ControllerMaxTest {
   @Test
   public void testControllerQuit() throws IOException, ParserConfigurationException,
           TransformerException {
-    StringReader inputQuit = new StringReader("2\n4\nquit");
+    StringReader inputQuit = new StringReader("quit");
     IController controller = new ControllerMax(inputQuit, mockModel, mockView);
     log = " (welcomeMessage)  (printMenu)  (farewellMessage) ";
     log2 = "";

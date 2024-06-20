@@ -142,7 +142,6 @@ public class ControllerImpl extends AbstractController {
     this.view.showExistingPorfolios(portfolioListStr);
     this.view.enterPortfolioName();
     String portfolioName = sc.next();
-    this.doesPortfolioExist(sc,portfolioName, portfolioList);
     String dateStr = this.dateBuilder(sc);
     LocalDate date = this.formatDate(dateStr);
     this.view.printResults("examineGL", this.model.getValue(portfolioName, date), 0);

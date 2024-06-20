@@ -3,27 +3,27 @@ PART 1
 - The program uses an MVC design pattern.
 
 - The model.model is represented by the model.model interface, and is implemented by the model.
-model.model.ModelImpl class.
+model.ModelImpl class.
 
-- The model.model.model.ModelImpl works the model.model.IPortfolio interface and the model.model.Stock interface
+- The model.model.ModelImpl works the model.IPortfolio interface and the model.Stock interface
  manage the program's data.
 
-- IPorfolio is implemented by model.model.model.Portfolio and contains info about:
+- IPorfolio is implemented by model.model.Portfolio and contains info about:
     - the portfolio's name
     - stocks
     - and number of shares per stock.
 
-- model.model.Stock is implemented by model.model.model.SingleStock, and contains info about:
+- model.Stock is implemented by model.model.SingleStock, and contains info about:
     - the stock's ticker
     - a list of string containing info
     - about the stock's value on all dates available
 
 - The controller.controller is represented by the controller.controller interface. and is
- implemented by controller.controller.controller.ControllerImpl.
+ implemented by controller.controller.ControllerImpl.
 - It uses the model and the view to manage the flow of the program
 
 - The view.view is represented by the view.view interface and is implemented by the
-view.view.view.ViewImpl.
+view.view.ViewImpl.
 - It receives data from the model and prints out a text-based interface to the console
 accordingly.
 
@@ -61,5 +61,15 @@ accordingly.
   the program shows the last vaild date instead
 
 
+  PART 3
+ Some new design choices for text based interfaces
+1.) As to enter in date until valid date
+2.) Asked to enter in stock until valid stock
+3.) Asked to enter in portfolio until valid portfolio
+4.) Goes back to most recent menu instead of main when finish
+with a feature
+5.) Supports fractional shares but not the input of frational shares
+6.) Asked to enter in percent utnil given vaild perecent
 
+Some design choices for GUI
 

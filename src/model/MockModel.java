@@ -99,7 +99,8 @@ public class MockModel implements IModel {
 
 
   @Override
-  public Stock findTicker(String ticker) {
+  public Stock findTicker(String ticker) throws IOException {
+    log.append("(findTicker");
     return null;
   }
 
