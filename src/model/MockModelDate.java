@@ -35,9 +35,9 @@ public class MockModelDate implements IModelMax {
   public Pair<String, String> composition(LocalDate date, String portfolioName) {
     try {
       log.append("Composing " + portfolioName + " in " + date + "\n");
-    } catch (IOException e) {
-      throw new RuntimeException(e);
+    } catch (IOException ignored) {
     }
+
     return null;
   }
 
@@ -45,9 +45,10 @@ public class MockModelDate implements IModelMax {
   public  Pair<String, String>  distrubtion(LocalDate date, String portfolioName) {
     try {
       log.append("Distributing " + portfolioName + " in " + date + "\n");
-    } catch (IOException e) {
-      throw new RuntimeException(e);
+    } catch (IOException ignored) {
+
     }
+
     return null;
   }
 

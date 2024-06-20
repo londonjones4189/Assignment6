@@ -4,6 +4,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -425,6 +426,13 @@ public class PortfolioDate implements IPortfolioMax {
     Collections.sort(datesInLog);
     return datesInLog;
   }
+
+//  public String getValue(String portfolioName, LocalDate date) {
+//    DecimalFormat df = new DecimalFormat("0.00");
+//    IPortfolio portfolio = findPortfolio(portfolioName);
+//    double result = portfolio.getPortfolioValue(date); //rename for portfolio
+//    return "$" + df.format(result);
+//  }
 
 }
 

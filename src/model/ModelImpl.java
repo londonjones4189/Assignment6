@@ -139,7 +139,7 @@ public class ModelImpl implements IModel {
               }
             }
             if (ticker != null && numShares != null) {
-              return new Transaction(tickerToStock.get(ticker), Double.parseDouble(numShares));
+              return new Transaction(this.findTicker(ticker), Double.parseDouble(numShares));
             }
           }
         }
