@@ -22,7 +22,7 @@ public interface IViewGUI {
   /**
    * Set the label that is showing what the model stores.
    */
-  void display();
+  void startProgram();
 
   /**
    * Set the listener for any actions.

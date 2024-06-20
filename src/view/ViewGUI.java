@@ -32,7 +32,7 @@ public class ViewGUI extends JFrame implements IViewGUI {
     // Add the card panel to the frame
     this.add(cardPanel);
     this.setSize(500, 200);
-    setVisible(true);
+    this.setVisible(false);
   }
 
   @Override
@@ -167,7 +167,7 @@ public class ViewGUI extends JFrame implements IViewGUI {
     createPort.add(portfolioNameTextField);
     createPort.add(createButton);
     createPort.add(back);
-    createPort.setVisible(true);
+//    createPort.setVisible(true);
     pack();
     return createPort;
   }
@@ -213,7 +213,7 @@ public class ViewGUI extends JFrame implements IViewGUI {
     this.setSize(400, 300);
   }
 
-  public void display() {
+  public void startProgram() {
     setVisible(true);
   }
 

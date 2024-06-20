@@ -12,7 +12,7 @@ import javax.xml.transform.TransformerException;
 import model.IModelMax;
 import view.IViewGUI;
 
-public class ControllerGUI implements ActionListener {
+public class ControllerGUI implements ActionListener, IController {
   private IModelMax model;
   private IViewGUI view;
   private String currentFuction;
@@ -26,8 +26,12 @@ public class ControllerGUI implements ActionListener {
     this.model = model;
     this.view = view;
     this.view.setListener(this);
-    this.view.display();
     this.currentFuction = "";
+  }
+
+  @Override
+  public void startProgram() {
+    this.view.startProgram();
   }
 
   @Override
