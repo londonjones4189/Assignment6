@@ -1,5 +1,7 @@
 package view;
+
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
@@ -8,8 +10,6 @@ import java.util.List;
 import controller.ControllerGUI;
 import model.Pair;
 
-// composition -> num of stocks
-// value/distribution -> monetary value of stocks in a portfolio
 public class ViewGUI extends JFrame implements IViewGUI {
   private CardLayout cardLayout;
   private JPanel cardPanel;
@@ -380,18 +380,26 @@ public class ViewGUI extends JFrame implements IViewGUI {
   public void showComputeResults(Pair<String, String> result, String function) {
     String finalResult = "";
     String stocks = result.getLeft();
-    String[] stockArr = stocks.split("||");
+    String[] stockArr = stocks.split(",");
     List<String> stockList = Arrays.asList(stockArr);
     String share = result.getRight();
-    String[] shareArr = share.split("||");
+    String[] shareArr = share.split(",");
     // Convert the array to a list
     List<String> shareList = Arrays.asList(shareArr);
+
     for (int i = 0; i < stockList.size(); i++) {
       for (int j = 0; j < shareList.size(); j++) {
-        String valueStr = "Stock: " + stockList.get(i) + ", Value: " + shareList.get(j);
-        finalResult += valueStr + System.lineSeparator();
+        if (stockList.get(i).isEmpty()
+                || shareList.get(j).isEmpty()) {
+          // ignore
+        } else {
+          String valueStr = "Stock: " + stockList.get(i) + " | Value: " + shareList.get(j);
+          finalResult += valueStr + System.lineSeparator();
+          System.out.println(finalResult);
+        }
       }
     }
+
     if (function.equals("Portfolio Value")) {
       this.valueText = new JTextField(finalResult);
       this.valueScreen.setLayout(new FlowLayout());
@@ -403,7 +411,7 @@ public class ViewGUI extends JFrame implements IViewGUI {
       cardLayout.show(cardPanel, "value");
       System.out.println("Value: " + finalResult);
     } else {
-      this.valueText = new JTextField(finalResult);
+      this.valueText.setText(finalResult);
       this.compScreen.setLayout(new FlowLayout());
       this.compScreen.add(this.valueText);
       Dimension maxSize = new Dimension(500, 300);
