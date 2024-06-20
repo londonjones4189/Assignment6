@@ -8,9 +8,13 @@
     <transDate LocalDate="2024-06-18">
         <ticker ticker="MSFT"/>
         <numShares numShares="20.0"/>
+        <ticker ticker="A"/>
+        <numShares numShares="20.0"/>
+        <ticker ticker="TSLA"/>
+        <numShares numShares="10.0"/>
     </transDate>
     <transDate LocalDate="2024-06-17">
-    <ticker ticker="TSLA"/>
-    <numShares numShares="10.0"/>
+        <ticker ticker="TSLA"/>
+        <numShares numShares="10.0"/>
     </transDate>
 </model.Portfolio>

@@ -35,4 +35,5 @@ public class ViewImpl extends AbstractView {
     this.editingExistingPortfolioHelper();
     this.moveForward();
   }
+
 }

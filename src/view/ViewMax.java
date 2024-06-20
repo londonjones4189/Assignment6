@@ -29,16 +29,16 @@ public class ViewMax extends AbstractView implements IViewMax {
   @Override
   public void editingExistingPortfolio() throws IOException {
     this.editingExistingPortfolioHelper();
-    writeMessage("3.Sell stocks in a portfilo (Type '3')" + System.lineSeparator());
-    writeMessage("4.Rebalance portfolio (Type '4')" + System.lineSeparator());
+    writeMessage("3.Rebalance portfolio(Type '3')" + System.lineSeparator());
+    writeMessage("4.Go back to menu (Type 'menu')" + System.lineSeparator());
     this.moveForward();
   }
 
   @Override
   public void barChartMenu() {
     writeMessage("⎯⎯ Bar Chart Menu ⎯⎯" + System.lineSeparator());
-    writeMessage("1.model.Stock Value overtime" + System.lineSeparator());
-    writeMessage("2.model.Portfolio over time" + System.lineSeparator());
+    writeMessage("1.Stock Value overtime" + System.lineSeparator());
+    writeMessage("2.Portfolio over time" + System.lineSeparator());
   }
 
   @Override
@@ -51,7 +51,7 @@ public class ViewMax extends AbstractView implements IViewMax {
   public void printMenu() throws IOException {
     this.printMenuHelper2();
     writeMessage("3.Bar Menu (Type in 3)" + System.lineSeparator());
-    writeMessage("4.Quit program (Type 'quit')" + System.lineSeparator());
+    writeMessage("4.Go back to menu (Type 'menu')" + System.lineSeparator());
     this.moveForward();
   }
 
@@ -68,11 +68,11 @@ public class ViewMax extends AbstractView implements IViewMax {
    */
   public void rebalance() {
     writeMessage("⎯⎯ Rebalancing  portfolio ⎯⎯" + System.lineSeparator());
-    writeMessage("To rebalance you can type in desired stock's ticker value and the percent "
-            + " of said stock you would like your portfolio to contain");
-    writeMessage("Once you've selected desires stocks with "
-            + "desire values type in 'stop' to update + "
-            + "portfolio");
+    writeMessage("To rebalance you can type in desired stock's ticker value and the percent " +
+            System.lineSeparator());
+    writeMessage(" of said stock you would like your portfolio to contain" + System.lineSeparator());
+    writeMessage("Once you've selected desires stocks with desire values " + System.lineSeparator());
+    writeMessage( "type in 'stop' and your portfolio will be rebalanced" + System.lineSeparator());
   }
 
   public void enterPercent() {
@@ -98,10 +98,13 @@ public class ViewMax extends AbstractView implements IViewMax {
     this.enterTickerName();
   }
 
-
   public void comps(String left, String right) {
     writeMessage("Stocks:" + left + System.lineSeparator());
     writeMessage("values:" + right + System.lineSeparator());
+  }
+
+  public void removing() {
+    writeMessage("Remember you can't sell a stock that is not in the portfolio" + System.lineSeparator());
   }
 
 

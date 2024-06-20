@@ -1,5 +1,6 @@
 import org.junit.Test;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -16,6 +17,7 @@ import model.ModelDate;
 import model.Pair;
 import model.PortfolioDate;
 import model.SingleStock;
+import model.Transaction;
 
 import static org.junit.Assert.assertEquals;
 
@@ -215,6 +217,26 @@ public class ModelDateTest {
     modelMax.createPortfolio("test");
     modelMax.buy("test", "A", 5.0, date);
     modelMax.sell("test", "A", 4.0, dateBefore);
+  }
+
+  @Test
+  public void testParsing() throws IOException, ParserConfigurationException, TransformerException {
+    IPortfolioMax expected = new PortfolioDate("test");
+    expected = expected.addStockNew(LocalDate.of(2024, 06, 14),
+            modelMax.findTicker("TSLA"), 10.0);
+    expected = expected.addStockNew(LocalDate.of(2024, 06, 17),
+            modelMax.findTicker("TSLA"), 10.0);
+    expected = expected.addStockNew(LocalDate.of(2024, 06, 18),
+            modelMax.findTicker("MSFT"), 20.0);
+    expected = expected.addStockNew(LocalDate.of(2024, 06, 18),
+            modelMax.findTicker("A"), 20.0);
+    expected = expected.addStockNew(LocalDate.of(2024, 06, 18),
+            modelMax.findTicker("TSLA"), 20.0);
+    IPortfolioMax actual =
+            modelMax.parseXML(new File("res/portfolios/test.xml"), "test");
+    assertEquals(expected.getPortfolioValue(LocalDate.of(2024, 06, 18)),
+            actual.getPortfolioValue(LocalDate
+                    .of(2024, 06, 18)), 0.001);
   }
 
 }

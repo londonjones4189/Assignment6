@@ -1,5 +1,6 @@
 package model;
 
+import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
@@ -89,6 +90,8 @@ public interface IModel {
    * @return a list of all the portfolios currently stored by the model
    */
   List<String> getPortfolioList();
+
+  IPortfolioMax parseXML(File file, String portfolioName) throws IOException;
 
   /**
    * Returns the stock represented by a ticker. If the stock is not already saved to the program,

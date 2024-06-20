@@ -84,20 +84,16 @@ public class ModelImpl implements IModel {
    * @param file the file where the profile is stored.
    * @return the portfolio saved in the program.
    */
-  protected IPortfolioMax parseXML(File file, String portfolioName) throws IOException {
+  @Override
+  public IPortfolioMax parseXML(File file, String portfolioName) throws IOException {
     try {
       DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
       DocumentBuilder builder = factory.newDocumentBuilder();
       Document document = builder.parse(new FileInputStream(file));
-      Element root = document.getDocumentElement();
-//      String portfolioName = getElementValue(root, "portfolioName");
       HashMap<LocalDate, List<Transaction>> log = new HashMap<>();
       List<LocalDate> datesInPortfolio = this.datesInSavedPortfolio(document);
       for (LocalDate date : datesInPortfolio) {
         List<Transaction> transactions = this.getTransaction(document, date);
-//        if (this.getTransaction(document, date) != null) {
-//          transactions.add(this.getTransaction(document, date));
-//        }
         log.put(date, transactions);
       }
       IPortfolioMax portfolio = new PortfolioDate(portfolioName, log);
@@ -160,7 +156,6 @@ public class ModelImpl implements IModel {
       if (trans.getTicker().equals(ticker)) {
         return true;
       }
-//        transactions.add(new Transaction(this.findTicker(ticker), Double.parseDouble(numShares)));
     }
     return false;
   }

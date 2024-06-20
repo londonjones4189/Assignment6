@@ -16,7 +16,7 @@ public class ViewGUI extends JFrame implements IViewGUI {
   private JPanel startPanel, buyScreen, editingScreen,
           sellScreen, valueScreen, compScreen;
   private JLabel title;
-  private JLabel info, buyStatus;
+  private JLabel info, buyStatus, enterName, instructions;
   private JTextField portfolioNameTextField, tickerNameTextField, numShares, valueText;
   private JButton createPortfolio, editPortfolio, quit,
           createButton, back, enterPortfolio, select, enterTicker, buy, compute;
@@ -25,6 +25,10 @@ public class ViewGUI extends JFrame implements IViewGUI {
   public ViewGUI() {
     this.valueText = new JTextField();
     cardLayout = new CardLayout();
+    this.dateOptions = new JComboBox<String>();
+    this.enterName = new JLabel("Enter the name of the portfolio");
+    this.instructions = new JLabel("Click back to edit a new portfolio after one is selected");
+    this.compute = new JButton("compute");
     cardPanel = new JPanel(cardLayout);
     startPanel = this.createStartScreen();
     cardPanel.add(startPanel, "start");
@@ -84,8 +88,8 @@ public class ViewGUI extends JFrame implements IViewGUI {
   private JPanel createBuyScreen() {
     this.setTitle("Buy stocks for portfolio");
     JPanel buyScreen = new JPanel(new FlowLayout());
-    JLabel enterName = new JLabel("Enter the name of the portfolio: ");
     buyScreen.add(enterName);
+    buyScreen.add(this.instructions);
     this.enterPortfolio = new JButton("Enter Portfolio");
     this.portfolioNameTextField = new JTextField("Type portfolio name", 20);
     buyScreen.add(this.portfolioNameTextField);
@@ -102,8 +106,8 @@ public class ViewGUI extends JFrame implements IViewGUI {
   private JPanel createSellScreen() {
     this.setTitle("Sell stocks for portfolio");
     this.sellScreen = new JPanel(new FlowLayout());
-    JLabel enterName = new JLabel("Enter the name of the portfolio: ");
-    sellScreen.add(enterName);
+    sellScreen.add(this.enterName);
+    sellScreen.add(this.instructions);
     this.enterPortfolio = new JButton("Enter Portfolio");
     this.portfolioNameTextField = new JTextField("Type portfolio name", 20);
     sellScreen.add(this.portfolioNameTextField);
@@ -120,8 +124,9 @@ public class ViewGUI extends JFrame implements IViewGUI {
   private JPanel createValueScreen() {
     this.setTitle("Compute portfolio values");
     this.valueScreen = new JPanel(new FlowLayout());
-    JLabel enterName = new JLabel("Enter the name of the portfolio: ");
+    this.valueScreen.setSize(600,600);
     valueScreen.add(enterName);
+    valueScreen.add(this.instructions);
     this.enterPortfolio = new JButton("Enter Portfolio");
     this.portfolioNameTextField = new JTextField("Type portfolio name", 20);
     valueScreen.add(this.portfolioNameTextField);
@@ -141,8 +146,9 @@ public class ViewGUI extends JFrame implements IViewGUI {
   private JPanel createCompScreen() {
     this.setTitle("Compute portfolio composition");
     this.compScreen = new JPanel(new FlowLayout());
-    JLabel enterName = new JLabel("Enter the name of the portfolio: ");
-    compScreen.add(enterName);
+    this.compScreen.setSize(800,600);
+    compScreen.add(this.enterName);
+    compScreen.add(this.instructions);
     this.enterPortfolio = new JButton("Enter Portfolio");
     this.portfolioNameTextField = new JTextField("Type portfolio name", 20);
     compScreen.add(this.portfolioNameTextField);
@@ -299,6 +305,7 @@ public class ViewGUI extends JFrame implements IViewGUI {
 
   @Override
   public void showDate(List<String> dates, String function) {
+    this.dateOptions.removeAll();
     String[] dateStrings = dates.toArray(new String[dates.size()]);
     this.dateOptions = new JComboBox<String>(dateStrings);
     if (function.equals("Buy stocks")) {
@@ -325,13 +332,11 @@ public class ViewGUI extends JFrame implements IViewGUI {
       cardLayout.show(cardPanel, "buy");
     } else if (function.equals("Portfolio Value")) {
       this.valueScreen.add(this.dateOptions);
-      this.compute = new JButton("compute");
       this.valueScreen.add(this.compute);
       cardPanel.add(valueScreen, "value");
       cardLayout.show(cardPanel, "value");
     } else {
       this.compScreen.add(this.dateOptions);
-      this.compute = new JButton("compute");
       this.compScreen.add(this.compute);
       cardPanel.add(compScreen, "comp");
       cardLayout.show(cardPanel, "comp");
@@ -378,7 +383,6 @@ public class ViewGUI extends JFrame implements IViewGUI {
 
   @Override
   public void showComputeResults(Pair<String, String> result, String function) {
-    String finalResult = "";
     String stocks = result.getLeft();
     String[] stockArr = stocks.split(",");
     List<String> stockList = Arrays.asList(stockArr);
@@ -386,42 +390,36 @@ public class ViewGUI extends JFrame implements IViewGUI {
     String[] shareArr = share.split(",");
     // Convert the array to a list
     List<String> shareList = Arrays.asList(shareArr);
+    String finalResult = this.formatResult(stockList, shareList);
+//    this.compScreen.setLayout(new FlowLayout());
+    this.valueText.setText(finalResult);
+    this.compScreen.add(this.valueText);
+    System.out.println("comp: " + finalResult);
+    cardPanel.add(compScreen, "comp");
+    cardLayout.show(cardPanel, "comp");
 
+  }
+
+  private String formatResult(List<String> stockList, List<String> shareList) {
+    String finalResult = "";
+    String value = "";
     for (int i = 0; i < stockList.size(); i++) {
       for (int j = 0; j < shareList.size(); j++) {
-        if (stockList.get(i).isEmpty()
-                || shareList.get(j).isEmpty()) {
-          // ignore
+        if (shareList.get(j).isEmpty()) {
+          // empty results should be ignored
         } else {
-          String valueStr = "Stock: " + stockList.get(i) + " | Value: " + shareList.get(j);
-          finalResult += valueStr + System.lineSeparator();
-          System.out.println(finalResult);
+          value = shareList.get(j);
         }
       }
+      if (stockList.get(i).isEmpty()) {
+        // ignore results
+      } else {
+        String valueStr = "Stock: " + stockList.get(i) + " | Value: " + value;
+        finalResult += valueStr + System.lineSeparator();
+        System.out.println(finalResult);
+      }
     }
-
-    if (function.equals("Portfolio Value")) {
-      this.valueText = new JTextField(finalResult);
-      this.valueScreen.setLayout(new FlowLayout());
-      this.valueScreen.add(this.valueText);
-      Dimension maxSize = new Dimension(500, 300);
-      valueScreen.setMaximumSize(maxSize);
-      valueScreen.setPreferredSize(maxSize);
-      cardPanel.add(valueScreen, "value");
-      cardLayout.show(cardPanel, "value");
-      System.out.println("Value: " + finalResult);
-    } else {
-      this.valueText.setText(finalResult);
-      this.compScreen.setLayout(new FlowLayout());
-      this.compScreen.add(this.valueText);
-      Dimension maxSize = new Dimension(500, 300);
-      compScreen.setMaximumSize(maxSize);
-      compScreen.setPreferredSize(maxSize);
-      System.out.println("comp: " + finalResult);
-      cardPanel.add(compScreen, "comp");
-      cardLayout.show(cardPanel, "comp");
-    }
-
+    return finalResult;
   }
 
   @Override
@@ -445,4 +443,12 @@ public class ViewGUI extends JFrame implements IViewGUI {
     cardLayout.show(cardPanel, "value");
     System.out.println("Value: " + str);
   }
+
+  @Override
+  public void clearResult() {
+    this.valueScreen.remove(this.valueText);
+    cardPanel.add(valueScreen, "value");
+    cardLayout.show(cardPanel, "value");
+  }
+
 }
