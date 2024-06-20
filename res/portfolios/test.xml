@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<model.Portfolio>
+    <name portfolioName="test"/>
+    <transDate LocalDate="2024-06-14">
+        <ticker ticker="TSLA"/>
+        <numShares numShares="10.0"/>
+    </transDate>
+    <transDate LocalDate="2024-06-18">
+        <ticker ticker="MSFT"/>
+        <numShares numShares="20.0"/>
+    </transDate>
+    <transDate LocalDate="2024-06-17">
+    <ticker ticker="TSLA"/>
+    <numShares numShares="10.0"/>
+    </transDate>
+</model.Portfolio>
