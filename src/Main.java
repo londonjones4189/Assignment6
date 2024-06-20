@@ -1,22 +1,12 @@
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.time.LocalDate;
-import java.util.HashMap;
-
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
-
 import controller.ControllerGUI;
-import controller.ControllerImpl;
 import controller.ControllerMax;
 import controller.IController;
 import model.IModelMax;
-import model.IPortfolioMax;
 import model.ModelDate;
-import model.PortfolioDate;
-import model.SingleStock;
-import model.Stock;
-import view.IView;
 import view.IViewGUI;
 import view.IViewMax;
 import view.ViewGUI;
@@ -33,25 +23,39 @@ public class Main {
    * @param args represents the arguments needed to start the main method.
    * @throws IOException if the input/out it is expecting does not exist.
    */
-  public static void main(String[] args) throws IOException,
-          ParserConfigurationException, TransformerException {
-//    Stock apple = new SingleStock("MSFT", "JRHGL8Z0YLRSGDYK");
-//    for (LocalDate date : apple.getStockDates()) {
-//      System.out.println(date);
-//    }
-    IModelMax model = new ModelDate();
-//    Readable rd = new InputStreamReader(System.in);
-//    Appendable ap = System.out;
-//    IViewMax view = new ViewMax(ap);
-    IViewGUI gui = new ViewGUI();
-    ControllerGUI controller = new ControllerGUI(model, gui);
-    controller.startProgram();
-//    IPortfolioMax test = new PortfolioDate("test");
-//    model.createPortfolio("test");
-//    model.findPortfolio("test");
-    // .addStockNew(LocalDate.of(2024,05,31),
-    //            apple, 10);
-//    model.distrubtion(LocalDate.of(2024,05,31), "test");
+  public static void main(String[] args) throws IOException, ParserConfigurationException, TransformerException {
+    if (args.length == 0) {
+      GUIGo();
+    } else if (args.length == 1 && "-text".equals(args[0])) {
+     TextInterfaceGo();
+    } else {
+      System.err.println("Unknown command line argument inputted");
+    }
   }
 
+  //Launches the GUI when running the jar file
+  private static void GUIGo() {
+    try {
+      IModelMax model = new ModelDate();
+      IViewGUI view = new ViewGUI();
+      IController controller = new ControllerGUI(model, view);
+      controller.startProgram();
+    } catch (IOException | ParserConfigurationException | TransformerException e) {
+      e.printStackTrace();
+    }
+  }
+
+  //Launches the text-based interface when running the jar file
+  private static void TextInterfaceGo() {
+    try {
+      IModelMax model = new ModelDate();
+      Readable rd = new InputStreamReader(System.in);
+      Appendable ap = System.out;
+      IViewMax view = new ViewMax(ap);
+      IController controller = new ControllerMax(rd, model, view);
+      controller.startProgram();
+    } catch (IOException | ParserConfigurationException | TransformerException e) {
+      e.printStackTrace();
+    }
+  }
 }

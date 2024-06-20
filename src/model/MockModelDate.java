@@ -32,14 +32,22 @@ public class MockModelDate implements IModelMax {
   }
 
   @Override
-  public Pair<String, String> composition(LocalDate date, String portfolioName) throws IOException {
-    log.append("Composing " + portfolioName + " in " + date + "\n");
+  public Pair<String, String> composition(LocalDate date, String portfolioName) {
+    try {
+      log.append("Composing " + portfolioName + " in " + date + "\n");
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
     return null;
   }
 
   @Override
-  public  Pair<String, String>  distrubtion(LocalDate date, String portfolioName) throws IOException {
-    log.append("Distributing " + portfolioName + " in " + date + "\n");
+  public  Pair<String, String>  distrubtion(LocalDate date, String portfolioName) {
+    try {
+      log.append("Distributing " + portfolioName + " in " + date + "\n");
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
     return null;
   }
 

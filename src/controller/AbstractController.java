@@ -375,7 +375,7 @@ public abstract class AbstractController implements IController {
    * @param sc represents the scanner.
    * @return the formatted date.
    */
-  protected String dateBuilder(Scanner sc) {
+  protected String dateBuilder(Scanner sc) throws IOException {
     String year = "";
     String finalDate = "";
     boolean validYear = false;
@@ -386,7 +386,6 @@ public abstract class AbstractController implements IController {
         year = sc.next();
         if (year.equals("quit")) {
           validYear = true;
-          this.view.heading();
           finalDate = "";
           throw new NoSuchElementException();
         }
@@ -416,7 +415,7 @@ public abstract class AbstractController implements IController {
    * @return a String with the formatted date.
    */
 
-  private String monthBuilder(String year, Scanner sc) {
+  private String monthBuilder(String year, Scanner sc) throws IOException {
     String finalDate = "";
     String month = "";
     boolean validMonth = false;
@@ -438,6 +437,8 @@ public abstract class AbstractController implements IController {
         this.view.invaildDate("month");
       } catch (NoSuchElementException e) {
         this.view.farewellMessage();
+      } catch (IOException e) {
+        throw new RuntimeException(e);
       }
     }
     return finalDate;
@@ -461,7 +462,6 @@ public abstract class AbstractController implements IController {
         this.view.day();
         String day = sc.next();
         if (day.equals("quit")) {
-          this.view.heading();
           finalDate = "";
           throw new NoSuchElementException();
         }

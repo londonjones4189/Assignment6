@@ -75,8 +75,12 @@ public class ControllerGUI implements ActionListener, IController {
         if (this.tickerExists()) {
           this.currentTicker = this.view.getTickerString();
           System.out.println("Current ticker: " + this.currentTicker);
-          this.view.showDate(this.model.findTicker(this.currentTicker).getStockDates(),
-                  this.currentFuction);
+          try {
+            this.view.showDate(this.model.findTicker(this.currentTicker).getStockDates(),
+                    this.currentFuction);
+          } catch (IOException ex) {
+            throw new RuntimeException(ex);
+          }
           this.view.setListenerBuy(this);
           this.view.stopListeningEnter(this);
         } else {
@@ -218,7 +222,11 @@ public class ControllerGUI implements ActionListener, IController {
   private boolean tickerExists() {
     try {
       String tickerName = this.view.getTickerString();
-      this.model.findTicker(tickerName);
+      try {
+        this.model.findTicker(tickerName);
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
     } catch (IllegalArgumentException ex) {
       return false;
     }
