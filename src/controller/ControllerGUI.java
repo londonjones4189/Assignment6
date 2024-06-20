@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
+
 import model.IModelMax;
 import view.IViewGUI;
 
@@ -61,7 +62,7 @@ public class ControllerGUI implements ActionListener, IController {
           this.currentPortfolio = this.view.getNameString();
           this.view.stopListeningPortfolio(this);
           if (this.currentFuction.equals("Portfolio Value")
-                  || this.currentFuction.equals("Portfolio Composition") ) {
+                  || this.currentFuction.equals("Portfolio Composition")) {
             this.view.showDate(this.model.findPortfolio(this.currentPortfolio).getDatesInLog(),
                     this.currentFuction);
             this.view.setListenerCompute(this);
@@ -132,7 +133,7 @@ public class ControllerGUI implements ActionListener, IController {
           this.view.showPortfolioValue(this.model.getValue(this.currentPortfolio, this.currentDate));
         } else {
           this.view.showComputeResults(this.model
-                  .composition(this.currentDate, this.currentPortfolio),
+                          .composition(this.currentDate, this.currentPortfolio),
                   this.currentFuction);
         }
 
@@ -141,8 +142,8 @@ public class ControllerGUI implements ActionListener, IController {
         this.view.backToStart();
         break;
       case "Select":
-       this.determineFunction();
-       break;
+        this.determineFunction();
+        break;
       case "Edit an existing portfolio":
         this.view.editingPortfolio();
         this.view.setListenerPortfolioEdit(this);
@@ -172,7 +173,7 @@ public class ControllerGUI implements ActionListener, IController {
         this.view.portfolioValue();
         this.view.setListenerEnter(this);
         break;
-        // trigger value screen
+      // trigger value screen
       case "Portfolio Composition":
         this.view.findComp();
         this.view.setListenerEnter(this);
@@ -183,7 +184,7 @@ public class ControllerGUI implements ActionListener, IController {
 
   private void createPortfolio() throws ParserConfigurationException,
           IOException, TransformerException {
-    String newName =  this.view.getNameString();
+    String newName = this.view.getNameString();
     for (String name : this.model.getPortfolioList()) {
       if (name.equals(newName)) {
         this.view.portfolioNameError();
@@ -195,7 +196,7 @@ public class ControllerGUI implements ActionListener, IController {
   }
 
   private boolean nameExists() {
-    String newName =  this.view.getNameString();
+    String newName = this.view.getNameString();
     for (String name : this.model.getPortfolioList()) {
       if (name.equals(newName)) {
         return true;

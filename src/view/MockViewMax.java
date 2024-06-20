@@ -17,7 +17,7 @@ public class MockViewMax implements IViewMax {
 
   public void printChart(String chart) {
     try {
-      log.append("(print chart)" + chart);
+      log.append("print chart" + chart);
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -26,7 +26,7 @@ public class MockViewMax implements IViewMax {
   @Override
   public void rebalance() {
     try {
-      log.append("(rebalance)");
+      log.append("rebalance");
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -35,7 +35,7 @@ public class MockViewMax implements IViewMax {
   @Override
   public void enterPercent()  {
     try {
-      log.append("(enter Percent)");
+      log.append("enter Percent");
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -44,7 +44,7 @@ public class MockViewMax implements IViewMax {
   @Override
   public void heading(String message)  {
     try {
-      log.append("(heading" + message +")");
+      log.append("heading" + message);
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -53,7 +53,7 @@ public class MockViewMax implements IViewMax {
   @Override
   public void barChartMenu()  {
     try {
-      log.append("(barChartMenu)");
+      log.append("barChartMenu");
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -62,7 +62,7 @@ public class MockViewMax implements IViewMax {
   @Override
   public void goals()  {
     try {
-      log.append("(goals)");
+      log.append("goals");
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -71,16 +71,7 @@ public class MockViewMax implements IViewMax {
   @Override
   public void comps(String left, String right)  {
     try {
-      log.append("(comps" + left + "/" + right + ")");
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
-  }
-
-  @Override
-  public void removing() {
-    try {
-      log.append("(removing)");
+      log.append("comps" + left + "/" + right);
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -94,7 +85,7 @@ public class MockViewMax implements IViewMax {
   @Override
   public void printResults(String function, String result, int num) {
     try {
-      log.append("(print results" + function + " " + result + ")" + num);
+      log.append("print results" + function + " " + result + " " + num);
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -103,7 +94,7 @@ public class MockViewMax implements IViewMax {
   @Override
   public void welcomeMessage()  {
     try {
-      log.append("(welcome)");
+      log.append("welcome");
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -112,7 +103,7 @@ public class MockViewMax implements IViewMax {
   @Override
   public void farewellMessage() {
     try {
-      log.append("(farewell)");
+      log.append("farewell");
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -121,7 +112,7 @@ public class MockViewMax implements IViewMax {
   @Override
   public void printMenu() {
     try {
-      log.append("(printMenu)");
+      log.append("printMenu");
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -130,7 +121,7 @@ public class MockViewMax implements IViewMax {
   @Override
   public void examineStocks()  {
     try {
-      log.append("(examineStocks)");
+      log.append("examineStocks");
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -139,7 +130,7 @@ public class MockViewMax implements IViewMax {
   @Override
   public void examineGLStart()  {
     try {
-      log.append("(examineGLStart)");
+      log.append("examineGLStart");
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -148,7 +139,7 @@ public class MockViewMax implements IViewMax {
   @Override
   public void examineXDayCrossStart()  {
     try {
-      log.append("(exmaineXDayCrossStart)");
+      log.append("exmaineXDayCrossStart");
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -157,7 +148,7 @@ public class MockViewMax implements IViewMax {
   @Override
   public void enterTickerName()  {
     try {
-      log.append("(enterTickerName)");
+      log.append("enterTickerName");
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -166,7 +157,7 @@ public class MockViewMax implements IViewMax {
   @Override
   public void examineEnterDate() {
     try {
-      log.append("(examineEnterDate)");
+      log.append("examineEnterDate");
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -175,7 +166,7 @@ public class MockViewMax implements IViewMax {
   @Override
   public void examineEnterEarlierDate() {
     try {
-      log.append("(examineEnterEarlierDate)");
+      log.append("examineEnterEarlierDate");
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -184,7 +175,7 @@ public class MockViewMax implements IViewMax {
   @Override
   public void examineEnterLaterDate() {
     try {
-      log.append("(examineEnterLaterDate)");
+      log.append("examineEnterLaterDate");
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -193,7 +184,7 @@ public class MockViewMax implements IViewMax {
   @Override
   public void cePortolio()  {
     try {
-      log.append("(cePortolio)");
+      log.append("cePortolio");
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -202,7 +193,7 @@ public class MockViewMax implements IViewMax {
   @Override
   public void makePortfolio()  {
     try {
-      log.append("(makePortfolio)");
+      log.append("makePortfolio");
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -211,7 +202,7 @@ public class MockViewMax implements IViewMax {
   @Override
   public void enterPortfolioName()  {
     try {
-      log.append("(enterPortfolioName)");
+      log.append("enterPortfolioName");
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -220,7 +211,7 @@ public class MockViewMax implements IViewMax {
   @Override
   public void editPortfolio()  {
     try {
-      log.append("(editPortfolio)");
+      log.append("editPortfolio");
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -229,7 +220,7 @@ public class MockViewMax implements IViewMax {
   @Override
   public void editingExistingPortfolio()  {
     try {
-      log.append("(editingExistingPortfolio)");
+      log.append("editingExistingPortfolio");
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -238,7 +229,7 @@ public class MockViewMax implements IViewMax {
   @Override
   public void xDays()  {
     try {
-      log.append("(xDays)");
+      log.append("xDays");
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -247,7 +238,7 @@ public class MockViewMax implements IViewMax {
   @Override
   public void undefinedInstructions(String str)  {
     try {
-      log.append("(undefinedInstructions)");
+      log.append("undefinedInstructions");
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -256,7 +247,7 @@ public class MockViewMax implements IViewMax {
   @Override
   public void invalidInput() {
     try {
-      log.append("(invaildInput)");
+      log.append("invaildInput");
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -265,7 +256,7 @@ public class MockViewMax implements IViewMax {
   @Override
   public void enterNumDays()  {
     try {
-      log.append("(enterNumDays)");
+      log.append("enterNumDays");
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -274,7 +265,7 @@ public class MockViewMax implements IViewMax {
   @Override
   public void showExistingPorfolios(String str)  {
     try {
-      log.append("(showExisitingPortfolios)" + str);
+      log.append("showExisitingPortfolios" + str);
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -283,7 +274,7 @@ public class MockViewMax implements IViewMax {
   @Override
   public void enterNumShares(String operation) {
     try {
-      log.append("(enterNumShares)" + operation);
+      log.append("enterNumShares" + operation);
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -292,7 +283,7 @@ public class MockViewMax implements IViewMax {
   @Override
   public void portfolioCreated(String portfolioName)  {
     try {
-      log.append("(portfolioCreated" + portfolioName + ")");
+      log.append("portfolioCreated" + portfolioName);
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -301,7 +292,7 @@ public class MockViewMax implements IViewMax {
   @Override
   public void portfolioError(int size)  {
     try {
-      log.append("(portfolioError" + size + ")");
+      log.append("portfolioError" + size);
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -310,7 +301,7 @@ public class MockViewMax implements IViewMax {
   @Override
   public void month()  {
     try {
-      log.append("(month)");
+      log.append("month");
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -328,7 +319,7 @@ public class MockViewMax implements IViewMax {
   @Override
   public void year() {
     try {
-      log.append("(Year)");
+      log.append("Year");
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -337,7 +328,7 @@ public class MockViewMax implements IViewMax {
   @Override
   public void sellCreated(String stocksName, int quanity)  {
     try {
-      log.append("(sellCreated)" + quanity);
+      log.append("sellCreated" + quanity);
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -346,7 +337,7 @@ public class MockViewMax implements IViewMax {
   @Override
   public void tryAgain()  {
     try {
-      log.append("(tryAgain)");
+      log.append("tryAgain");
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -355,7 +346,7 @@ public class MockViewMax implements IViewMax {
   @Override
   public void invaildDate(String value) {
     try {
-      log.append("(InvaildDate)" + value);
+      log.append("InvaildDate" + value);
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -364,7 +355,7 @@ public class MockViewMax implements IViewMax {
   @Override
   public void notInSystem()  {
     try {
-      log.append("(Not in system)");
+      log.append("Not in system");
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -373,21 +364,12 @@ public class MockViewMax implements IViewMax {
   @Override
   public void notInSystemTicker()  {
     try {
-      log.append("(notInSystemTicker)");
+      log.append("notInSystemTicker");
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
   }
 
-  @Override
-  public void duplicate() {
-    try {
-      log.append("(duplicate)");
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
-  }
 
 }
-
 

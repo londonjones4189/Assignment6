@@ -57,7 +57,7 @@ public class ModelDate extends ModelImpl implements IModelMax {
   }
 
   /**
-   * Updates the list of portfolios based on the list of saved portfolios
+   * Updates the list of portfolios based on saved XML files
    * from previous times the program was run.
    */
   public void updatePortfolios() throws IOException {
@@ -81,10 +81,11 @@ public class ModelDate extends ModelImpl implements IModelMax {
 
   /**
    * Allows the user to sell stocks from their portfolio on a specific date.
+   *
    * @param portfolioname represents the name of the portfolio.
-   * @param ticker represents the stock's ticker.
-   * @param numShares represents the number of shares being sold.
-   * @param date represents the date of the sale.
+   * @param ticker        represents the stock's ticker.
+   * @param numShares     represents the number of shares being sold.
+   * @param date          represents the date of the sale.
    * @throws IOException if the input/output is missing.
    */
   public void sell(String portfolioname, String ticker, double numShares, LocalDate date)
@@ -99,13 +100,14 @@ public class ModelDate extends ModelImpl implements IModelMax {
 
   /**
    * Allows the user to sell stocks from their portfolio on a specific date.
+   *
    * @param portfolioname represents the name of the portfolio.
-   * @param ticker represents the stock's ticker.
-   * @param numShares represents the number of shares being bought.
-   * @param date represents the date of the sale.
-   * @throws IOException if the input/output is missing.
+   * @param ticker        represents the stock's ticker.
+   * @param numShares     represents the number of shares being bought.
+   * @param date          represents the date of the sale.
+   * @throws IOException                  if the input/output is missing.
    * @throws ParserConfigurationException if the file cannot be parsed.
-   * @throws TransformerException if the path is wrong.
+   * @throws TransformerException         if the path is wrong.
    */
   public void buy(String portfolioname, String ticker, double numShares, LocalDate date)
           throws IOException, ParserConfigurationException, TransformerException {
@@ -119,10 +121,11 @@ public class ModelDate extends ModelImpl implements IModelMax {
 
   /**
    * Allows the user to find the composition of their portfolio.
-   * @param date represents the date the composition of the portfolio is being found.
+   *
+   * @param date          represents the date the composition of the portfolio is being found.
    * @param portfolioName represents the name of the portfolio.
    * @return A Pair where the left side represents a stock and
-   *     the right side represents the number of shares in a portfolio.
+   * the right side represents the number of shares in a portfolio.
    */
   @Override
   public Pair<String, String> composition(LocalDate date, String portfolioName) {
@@ -135,7 +138,7 @@ public class ModelDate extends ModelImpl implements IModelMax {
    * Returns a pair representing 2 lists, a list of stocks, and
    * then a list of values of the stocks.
    *
-   * @param date date which disturbtion is being calculated.
+   * @param date          date which disturbtion is being calculated.
    * @param portfolioName name of said portfolio.
    * @return a pair of 2 lists.
    */
@@ -156,21 +159,22 @@ public class ModelDate extends ModelImpl implements IModelMax {
       //question
     }
     for (Pair<String, Double> p : lop) {
-      stocks = stocks + ", "+ p.getLeft();
-      value = value + ", "  + p.getRight();
+      stocks = stocks + ", " + p.getLeft();
+      value = value + ", " + p.getRight();
     }
     return new Pair<String, String>(stocks, value);
   }
 
   /**
    * Allows the user to rebalance their portfolio to match their goal weights.
-   * @param date represents the date the portfolio is being rebalanced on.
+   *
+   * @param date          represents the date the portfolio is being rebalanced on.
    * @param portfolioName represents the name of the portfolio.
-   * @param goals represents the goal weights of the portfolios.
+   * @param goals         represents the goal weights of the portfolios.
    * @return a new Portfolio with the weights changed.
    * @throws ParserConfigurationException if the file parsed is missing.
-   * @throws IOException if the input/output is missing.
-   * @throws TransformerException if there is a path missing.
+   * @throws IOException                  if the input/output is missing.
+   * @throws TransformerException         if there is a path missing.
    */
   @Override
   public IPortfolioMax reblance(LocalDate date, String portfolioName, Map<String, Double> goals)
@@ -180,10 +184,7 @@ public class ModelDate extends ModelImpl implements IModelMax {
     for (String key : goals.keySet()) {
       goalStock.put(findTicker(key), goals.get(key));
     }
-    System.out.print(portfolios.toString());
-    System.out.println(this.getPortfolioList().toString());
     IPortfolioMax portfolio = portfolios.get(portfolioName);
-    //todo saying empty here
     IPortfolioMax newPortfolio = portfolio.rebalance(goalStock, date);
     return newPortfolio;
   }

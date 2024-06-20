@@ -134,4 +134,4 @@ public class StockGraphStats implements IGraphStats {
     graph.append("Scale: * = " + scale);
     return this.printTitle() + System.lineSeparator() + graph.toString() + System.lineSeparator();
   }
-}
+  }

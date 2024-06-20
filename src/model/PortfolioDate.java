@@ -68,9 +68,10 @@ public class PortfolioDate implements IPortfolioMax {
 
   /**
    * Allows the user to buy stocks from their portfolio on a specific date.
-   * @param date represents the date of the purchase.
-   * @param stock represents the stock being bought.
-   * @param shares  represents the number of shares being bought.
+   *
+   * @param date   represents the date of the purchase.
+   * @param stock  represents the stock being bought.
+   * @param shares represents the number of shares being bought.
    * @return a new model.Portfolio with the new stock added.
    */
   public IPortfolioMax addStockNew(LocalDate date, Stock stock, double shares) {
@@ -122,10 +123,11 @@ public class PortfolioDate implements IPortfolioMax {
 
   /**
    * Allows the user to sell stocks from their portfolio on a specific date.
-   * @param date represents the date of the sale.
-   * @param stock represents the stock being sold.
-   * @param shares  represents the number of shares being sold.
-   * @return  a new model.Portfolio with the stock removed.
+   *
+   * @param date   represents the date of the sale.
+   * @param stock  represents the stock being sold.
+   * @param shares represents the number of shares being sold.
+   * @return a new model.Portfolio with the stock removed.
    */
   public IPortfolioMax removeStockNew(LocalDate date, Stock stock, double shares) {
     // Invalidate dates after the given date
@@ -191,40 +193,43 @@ public class PortfolioDate implements IPortfolioMax {
 
   /**
    * Allows the user to rebalance their portfolio to match their goal weights.
+   *
    * @param goalStock represents the goal weights of each stock.
-   * @param date represents the date the portfolio is being rebalanced on.
-   * @return  a new model.Portfolio with the stock weights rebalanced.
+   * @param date      represents the date the portfolio is being rebalanced on.
+   * @return a new model.Portfolio with the stock weights rebalanced.
    */
   public IPortfolioMax rebalance(Map<Stock, Double> goalStock, LocalDate date) {
-    //removes all invaild dates
-    this.invaild(date);
-    //Adds currDate if not already contained
-    this.currDate(date);
-    double currValue = this.getPortfolioValue(date);
-    //variables
-    List<Transaction> currTransactions = this.transLog.get(date);
-    //checks to see if stocks are present
-    for (Stock s : goalStock.keySet()) {
-      if (!(stockContained(s, date))) {
-        throw new IllegalArgumentException("model.Stock is not in this portfolio");
+    try {
+      //removes all invaild dates
+      this.invaild(date);
+      //Adds currDate if not already contained
+      this.currDate(date);
+      double currValue = this.getPortfolioValue(date);
+      //variables
+      List<Transaction> currTransactions = this.transLog.get(date);
+      //checks to see if stocks are present
+      for (Stock s : goalStock.keySet()) {
+       s.getStockValues(date.toString(), "close");
       }
+      //making hashamp (stock, goalValue)
+      for (Map.Entry<Stock, Double> entry : goalStock.entrySet()) {
+        goalStock.put(entry.getKey(), entry.getValue() * currValue);
+      }
+      //making hashMap (stock, goalShare) -> do this by didving goalValue by stock value amount
+      for (Map.Entry<Stock, Double> entry : goalStock.entrySet()) {
+        goalStock.put(entry.getKey(), entry.getValue()
+                / entry.getKey().getStockValues(String.valueOf(date), "close"));
+      }
+      //new log
+      List<Transaction> newLog = new ArrayList<>();
+      for (Map.Entry<Stock, Double> entry : goalStock.entrySet()) {
+        Transaction newTrans = new Transaction(entry.getKey(), entry.getValue());
+        newLog.add(newTrans);
+      }
+      this.transLog.put(date, newLog);
+      return new PortfolioDate(this.portfolioName, this.transLog);
+    } catch (IllegalArgumentException e) {
     }
-    //making hashamp (stock, goalValue)
-    for (Map.Entry<Stock, Double> entry : goalStock.entrySet()) {
-      goalStock.put(entry.getKey(), entry.getValue() * currValue);
-    }
-    //making hashMap (stock, goalShare) -> do this by didving goalValue by stock value amount
-    for (Map.Entry<Stock, Double> entry : goalStock.entrySet()) {
-      goalStock.put(entry.getKey(), entry.getValue()
-              / entry.getKey().getStockValues(String.valueOf(date), "close"));
-    }
-    //new log
-    List<Transaction> newLog = new ArrayList<>();
-    for (Map.Entry<Stock, Double> entry : goalStock.entrySet()) {
-      Transaction newTrans = new Transaction(entry.getKey(), entry.getValue());
-      newLog.add(newTrans);
-    }
-    this.transLog.put(date, newLog);
     return new PortfolioDate(this.portfolioName, this.transLog);
   }
 

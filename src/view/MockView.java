@@ -285,4 +285,14 @@ public class MockView implements IView {
 
   }
 
+  @Override
+  public void duplicate() {
+
+  }
+
+  @Override
+  public void buyCreated(String ticker, int num) {
+
+  }
+
 }

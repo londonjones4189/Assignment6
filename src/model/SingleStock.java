@@ -18,11 +18,12 @@ public class SingleStock implements Stock {
 
   /**
    * Represents an individual stock.
-   * @param ticker represents the stock's NYSE ticker.
+   *
+   * @param ticker     represents the stock's NYSE ticker.
    * @param stockValue represents the data about the stock stored in its
    *                   .txt file as a list of string that can be searched by the program
    * @throws IOException is thrown if the input/output the program is expecting
-   *     is missing/changed location.
+   *                     is missing/changed location.
    */
   public SingleStock(String ticker, List<String> stockValue) throws IOException {
     this.ticker = ticker;
@@ -115,7 +116,8 @@ public class SingleStock implements Stock {
         case "close":
           return Double.parseDouble(array[4]);
         default:
-          return 0; }
+          return 0;
+      }
     } catch (IndexOutOfBoundsException e) {
       return 0;
     }

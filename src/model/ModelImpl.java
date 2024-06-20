@@ -81,6 +81,7 @@ public class ModelImpl implements IModel {
   /**
    * Parses through a saved portfolio in a .xml file.
    * Lets the program retrieve stored files.
+   *
    * @param file the file where the profile is stored.
    * @return the portfolio saved in the program.
    */
@@ -213,6 +214,7 @@ public class ModelImpl implements IModel {
   /**
    * Returns the stock represented by a ticker. If the stock is not already saved to the program,
    * the program will contact the API to receive the data.
+   *
    * @param tickerCompName represents the ticker name of the stock.
    * @return a Stock with the given ticker.
    * @throws IllegalArgumentException if ticker is not supported by the program or the API.

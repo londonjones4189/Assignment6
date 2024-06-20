@@ -12,6 +12,7 @@ public interface IPortfolio {
 
   /**
    * Gets the name of the portfolio.
+   *
    * @return the name of the portfolio.
    */
   String getPortfolioName();
@@ -19,6 +20,7 @@ public interface IPortfolio {
   /**
    * Returns the value of the portfolio based on the portfolio's stocks, number of shares
    * per stock, and the date the user wants to examine the value.
+   *
    * @param date the date of the closing price used to calculate portfolio value.
    * @return the value of the Model.Model.model.Portfolio in USD
    */
@@ -37,17 +39,19 @@ public interface IPortfolio {
 
   /**
    * Removes some stock from a portfolio based on number of shares.
+   *
    * @param numberOfShares represents the number of shares of the stock
    *                       to be removed from the portfolio.
    * @return a new Model.model.IPortfolio with the stock and the desired shares removed
    * @throws IllegalArgumentException if the user attempts to remove a stock that doesn't
-   *     or the user tries to remove more stocks than currently exist in the portfolio
+   *                                  or the user tries to remove more stocks than currently exist in the portfolio
    */
   IPortfolio removeStock(Stock stock, double numberOfShares)
           throws IllegalArgumentException;
 
   /**
    * Returns the list in the current log of transactions.
+   *
    * @return the list of dates currently in the log.
    */
   List<String> getDatesInLog();

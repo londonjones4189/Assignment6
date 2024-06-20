@@ -26,8 +26,9 @@ public interface IModel {
 
   /**
    * Allows the user to add a stock to a portfolio without a date.
-   * @param ticker represents the ticker name of the stock.
-   * @param numShares represents the number of shares to be bought.
+   *
+   * @param ticker        represents the ticker name of the stock.
+   * @param numShares     represents the number of shares to be bought.
    * @param portfolioName represents the name of the portfolio.
    * @return a String indicating whether the method was successful or not.
    * @throws IllegalArgumentException if the ticker or number of shares is invalid.
@@ -37,17 +38,19 @@ public interface IModel {
 
   /**
    * Allows the user to remove a stock from a portfolio  without a date.
-   * @param ticker represents the ticker name of the stock.
+   *
+   * @param ticker         represents the ticker name of the stock.
    * @param numberOfShares represents the number of shares to be bought.
-   * @param portfolioName represents the name of the portfolio.
+   * @param portfolioName  represents the name of the portfolio.
    * @return a String indicating whether the method was successful or not.
    */
   String removeStock(String ticker, int numberOfShares, String portfolioName);
 
   /**
    * Returns the value of a given portfolio on a specified date.
+   *
    * @param portfolioName represents the name of the portfolio.
-   * @param date represents the date used to evaluate the portfolio.
+   * @param date          represents the date used to evaluate the portfolio.
    * @return a String that shows the value of the portfolio in USD.
    */
   String getValue(String portfolioName, LocalDate date);
@@ -57,9 +60,9 @@ public interface IModel {
    *
    * @param ticker represents the stock's NYSE ticker.
    * @param start  represents the start of the specified period.
-   * @param end represents the end of the specified period.
+   * @param end    represents the end of the specified period.
    * @return a String with the result of the calculation. The result can either be that the stock
-   *     increased, decreased, or stayed the same value. The difference is value is also printed.
+   * increased, decreased, or stayed the same value. The difference is value is also printed.
    * @throws IllegalArgumentException if the number of shares is less than or equal to 0.
    */
   String examineGainLossDate(String ticker, LocalDate start, LocalDate end)
@@ -81,12 +84,13 @@ public interface IModel {
    * @param ticker     represents the stock's NYSE ticker.
    * @param daysBefore the number of days before the start date the user wants to see the average.
    * @return the X-Day average of a given stock starting at the start date and X number of days
-   *     into the past.
+   * into the past.
    */
   String examXAvgOverDays(String ticker, LocalDate startingDate, int daysBefore);
 
   /**
    * Used by controller to view all the portfolios already created.
+   *
    * @return a list of all the portfolios currently stored by the model
    */
   List<String> getPortfolioList();
@@ -96,6 +100,7 @@ public interface IModel {
   /**
    * Returns the stock represented by a ticker. If the stock is not already saved to the program,
    * the program will contact the API to receive the data.
+   *
    * @param ticker represents the ticker name of the stock.
    * @return a model.Stock with the given ticker.
    * @throws IllegalArgumentException if ticker is not supported by the program or the API.
@@ -104,6 +109,7 @@ public interface IModel {
 
   /**
    * Returns a portfolio that is represented by the given portfolio name.
+   *
    * @param portfolioName represents the name of the portfolio.
    * @return the portfolio associated with the name.
    * @throws IllegalArgumentException if the portfolio cannot be found.

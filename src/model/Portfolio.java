@@ -15,6 +15,7 @@ public class Portfolio implements IPortfolio {
 
   /**
    * Public constructor for the class.
+   *
    * @param portfolioName represents the name of the portfolio.
    */
   public Portfolio(String portfolioName) {

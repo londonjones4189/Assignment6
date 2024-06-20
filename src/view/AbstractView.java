@@ -68,11 +68,11 @@ public abstract class AbstractView implements IView {
         writeMessage("Result: " + result + System.lineSeparator());
         break;
       case "XDayCrossover":
-        writeMessage(num + " Day Stock Crossover, Dates that crossover: "
+        writeMessage(num + " Day model.Stock Crossover, Dates that crossover: "
                 + result + System.lineSeparator());
         break;
       case "XDayAvg":
-        writeMessage(num + " Day Stock Average: $" + result + System.lineSeparator());
+        writeMessage(num + " Day model.Stock Average: $" + result + System.lineSeparator());
         break;
       default:
         writeMessage(result + System.lineSeparator());
@@ -241,7 +241,7 @@ public abstract class AbstractView implements IView {
    * @throws IOException if the input/output is missing.
    */
   public void cePortfolioHelper() throws IOException {
-    writeMessage("⎯⎯ Portfolio Creation/Editing Menu ⎯⎯" + System.lineSeparator());
+    writeMessage("⎯⎯ model.Portfolio Creation/Editing Menu ⎯⎯" + System.lineSeparator());
     writeMessage("1.Make a new portfolio (Type '1')" + System.lineSeparator());
     writeMessage("2.Edit an existing portfolio (Type '2')" + System.lineSeparator());
     writeMessage("3.See the value of an existing portfolio (Type '3')" + System.lineSeparator());
@@ -267,9 +267,9 @@ public abstract class AbstractView implements IView {
   public void editingExistingPortfolioHelper() throws IOException {
     writeMessage("⎯⎯ Editing an existing portfolio ⎯⎯" + System.lineSeparator());
     writeMessage("What changes would you like to make?" + System.lineSeparator());
-    writeMessage("1.Buy shares for an existing stock/Buy new stock (Type '1')"
+    writeMessage("1.Add shares to an existing stock/add new stock (Type '1')"
             + System.lineSeparator());
-    writeMessage("2.Sell shares from an existing stock (Type '2')" + System.lineSeparator());
+    writeMessage("2.Remove a shares from an existing stock (Type '2')" + System.lineSeparator());
   }
 
   @Override
@@ -309,8 +309,4 @@ public abstract class AbstractView implements IView {
     this.invaildDate("ticker");
   }
 
-  public void duplicate(){
-    writeMessage("Remember you can't have duplicate portfolio names, try again"  +
-            System.lineSeparator());
-  }
 }

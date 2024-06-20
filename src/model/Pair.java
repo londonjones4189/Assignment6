@@ -14,6 +14,7 @@ public class Pair<T, K> {
 
   /**
    * Returns the left string of a pair.
+   *
    * @return the left list of a pair.
    */
   public T getLeft() {
@@ -22,6 +23,7 @@ public class Pair<T, K> {
 
   /**
    * Retunrs the right string of a pair.
+   *
    * @return the right string of a pair.
    */
   public K getRight() {

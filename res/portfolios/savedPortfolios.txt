@@ -1,5 +1,13 @@
-test
-test2
+bye
+bye
+1
+hello
+tuna
+good
+tuna
+tuna
+menu
+quit
 test
 test
 test

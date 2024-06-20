@@ -8,6 +8,7 @@ public interface IGraphStats {
   /**
    * Allows the user to create a graph to show the performance
    * of a stock or a graph over time.
+   *
    * @return a String that contains the graph.
    */
   String createGraph();
