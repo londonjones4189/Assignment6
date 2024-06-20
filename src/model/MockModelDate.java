@@ -1,5 +1,6 @@
 package model;
 
+import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -28,7 +29,7 @@ public class MockModelDate implements IModelMax {
   @Override
   public IPortfolioMax reblance(LocalDate date, String portfolioName, Map<String, Double> goal) throws IOException, ParserConfigurationException, TransformerException {
     log.append("Reblancing " + portfolioName + " in " + date + "\n");
-    return delegate.reblance(date,portfolioName, goal);
+    return delegate.reblance(date, portfolioName, goal);
   }
 
   @Override
@@ -42,7 +43,7 @@ public class MockModelDate implements IModelMax {
   }
 
   @Override
-  public  Pair<String, String>  distrubtion(LocalDate date, String portfolioName) {
+  public Pair<String, String> distrubtion(LocalDate date, String portfolioName) {
     try {
       log.append("Distributing " + portfolioName + " in " + date + "\n");
     } catch (IOException ignored) {
@@ -106,7 +107,7 @@ public class MockModelDate implements IModelMax {
   public String examineGainLossDate(String ticker, LocalDate start, LocalDate end)
           throws IllegalArgumentException {
     try {
-      log.append("gl" + ticker  + "/" + start + "/" + end + "\n");
+      log.append("gl" + ticker + "/" + start + "/" + end + "\n");
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -116,7 +117,7 @@ public class MockModelDate implements IModelMax {
   @Override
   public List<String> examCrossover(String ticker, LocalDate startingDate, int numDaysBefore) {
     try {
-      log.append("crossover " + ticker + " in " + startingDate + "/" + numDaysBefore+  "\n");
+      log.append("crossover " + ticker + " in " + startingDate + "/" + numDaysBefore + "\n");
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -141,6 +142,11 @@ public class MockModelDate implements IModelMax {
       throw new RuntimeException(e);
     }
     return delegate.getPortfolioList();
+  }
+
+  @Override
+  public IPortfolioMax parseXML(File file, String portfolioName) throws IOException {
+    return null;
   }
 
 

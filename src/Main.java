@@ -23,7 +23,8 @@ public class Main {
    * @param args represents the arguments needed to start the main method.
    * @throws IOException if the input/out it is expecting does not exist.
    */
-  public static void main(String[] args) throws IOException, ParserConfigurationException, TransformerException {
+  public static void main(String[] args) throws IOException, ParserConfigurationException,
+          TransformerException {
     if (args.length == 0) {
       GUIGo();
     } else if (args.length == 1 && "-text".equals(args[0])) {

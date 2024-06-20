@@ -81,4 +81,6 @@ public interface IViewGUI {
   void sellError();
 
   void showPortfolioValue(String str);
+
+  void clearResult();
 }

@@ -280,4 +280,9 @@ public class MockView implements IView {
     // mock
   }
 
+  @Override
+  public void duplicate() {
+
+  }
+
 }

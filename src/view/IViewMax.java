@@ -54,4 +54,10 @@ public interface IViewMax extends IView {
    * @param right either the amount of shares or value fo shares.
    */
   void comps(String left, String right);
+
+  /**
+   * Prints out a reminder that one can not remove stocks
+   * that are not already in the portfolio
+   */
+  void removing();
 }

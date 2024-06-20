@@ -35,6 +35,7 @@ public class ControllerImpl extends AbstractController {
     super(readable, model, view);
     this.scanner = new Scanner(readable);
   }
+
   @Override
   public void startProgram() throws IOException, ParserConfigurationException,
           TransformerException {

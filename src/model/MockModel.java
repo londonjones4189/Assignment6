@@ -1,5 +1,6 @@
 package model;
 
+import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
@@ -20,7 +21,6 @@ public class MockModel implements IModel {
   public Appendable getLog() {
     return log;
   }
-
 
 
   @Override
@@ -86,7 +86,6 @@ public class MockModel implements IModel {
   }
 
 
-
   @Override
   public List<String> getPortfolioList() {
     try {
@@ -95,6 +94,11 @@ public class MockModel implements IModel {
       e.printStackTrace();
     }
     return List.of();
+  }
+
+  @Override
+  public IPortfolioMax parseXML(File file, String portfolioName) throws IOException {
+    return null;
   }
 
 

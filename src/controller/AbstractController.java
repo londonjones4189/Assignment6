@@ -89,14 +89,12 @@ public abstract class AbstractController implements IController {
         }
         this.view.enterTickerName();
         ticker = sc.next();
-        System.out.println(ticker);
         this.model.findTicker(ticker);
         vaildStock = true;
       } catch (IOException e) {
         this.view.notInSystemTicker();
-      } catch (IllegalArgumentException e){
+      } catch (IllegalArgumentException e) {
         this.view.notInSystemTicker();
-        System.out.println("here now");
       }
     }
     return ticker;
@@ -112,11 +110,11 @@ public abstract class AbstractController implements IController {
         this.view.showExistingPorfolios(portfolioListStr);
         this.view.enterPortfolioName();
         name = sc.next();
-        doesPortfolioExist(sc, name,this.model.getPortfolioList());
+        doesPortfolioExist(sc, name, this.model.getPortfolioList());
         vaildPortfolio = true;
         break;
       } catch (IllegalArgumentException e) {
-        this.view.tryAgain();;
+        this.view.tryAgain();
       }
     }
     return name;
@@ -269,17 +267,15 @@ public abstract class AbstractController implements IController {
 
   void createNewPortfolio(Scanner sc)
           throws IOException, ParserConfigurationException, TransformerException {
-    //creating portfolio
-    String portfolioList = this.formatListString(this.model.getPortfolioList());
-    System.out.println(portfolioList);
-    this.view.showExistingPorfolios(portfolioList);
-    this.view.makePortfolio();
-    String portfolioName = sc.next();
     try {
-      this.model.createPortfolio(portfolioName); // why is it skipping ovee thsi
+      this.view.showExistingPorfolios(this.model.getPortfolioList().toString());
+      this.view.enterPortfolioName();
+      String portfolioName = sc.next();
+      this.model.createPortfolio(portfolioName);
       this.view.portfolioCreated(portfolioName);
     } catch (IllegalArgumentException e) {
-      this.view.invalidInput();
+      this.view.duplicate();
+      this.createNewPortfolio(sc);
     }
   }
 
@@ -308,9 +304,10 @@ public abstract class AbstractController implements IController {
    * If the user enters 1 -> they can create a new portfolio.
    * If the user enters 2 -> they can edit an existing portfolio.
    * If the user enters 3 -> they can compute the value of an existing portfolio.
-   * @throws IOException if the input/output is missing.
+   *
+   * @throws IOException                  if the input/output is missing.
    * @throws ParserConfigurationException if the file used parse existing portfolios is misisng.
-   * @throws TransformerException if there is a missing path or configuration problems.
+   * @throws TransformerException         if there is a missing path or configuration problems.
    */
 
 
@@ -345,7 +342,6 @@ public abstract class AbstractController implements IController {
   }
 
 
-
   //determines value of a portfolio based on the type of portfolio
   protected abstract void examinePortfolioValue(Scanner scanner, List<String> portfolioList)
           throws IOException;
@@ -354,7 +350,7 @@ public abstract class AbstractController implements IController {
    * Verifies that the portfolio name the user provides already exists so they can edit
    * allowing the user to edit.
    *
-   * @param sc represents the scanner.
+   * @param sc            represents the scanner.
    * @param portfolioName represents the name of the portfolio.
    * @param portfolioList represents the list of the portfolio.
    * @throws IOException if the input/output is missing.
@@ -394,7 +390,7 @@ public abstract class AbstractController implements IController {
         this.formatDate(finalDate);
         finalDate = this.monthBuilder(year, sc);
         validYear = true;
-      } catch (IllegalArgumentException | DateTimeParseException e ) {
+      } catch (IllegalArgumentException | DateTimeParseException e) {
         this.view.invaildDate("year");
       } catch (NoSuchElementException e) {
         this.view.farewellMessage();
@@ -404,12 +400,10 @@ public abstract class AbstractController implements IController {
   }
 
 
-
-
-
   /**
    * Allows users to input the month and if inputted incorrectly allows them to
    * retype the month until the day is correct.
+   *
    * @param year represents the year of the date they want to input.
    * @param sc   represents the scanner.
    * @return a String with the formatted date.
@@ -450,8 +444,8 @@ public abstract class AbstractController implements IController {
    * retype the day until the day is correct.
    *
    * @param month represents the month of the date they want to input.
-   * @param year represents the year of the date they want to input.
-   * @param sc represents the scanner.
+   * @param year  represents the year of the date they want to input.
+   * @param sc    represents the scanner.
    * @return a String with the formatted date.
    */
   public String dayBuilder(String month, String year, Scanner sc) {
@@ -479,6 +473,7 @@ public abstract class AbstractController implements IController {
 
   /**
    * Verifies that the portfolio name the user provides already exists before editing.
+   *
    * @param portfolioName represents the name of the portfolio.
    * @param portfolioList represents the list of currently existing portfolios.
    * @throws IOException if the input/output is missing.
