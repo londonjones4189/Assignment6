@@ -1,15 +1,19 @@
 package controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
 import model.IModel;
+import model.IPortfolio;
 import view.IView;
 
 /**
@@ -23,6 +27,7 @@ public abstract class AbstractController implements IController {
   IView view;
   boolean quit;
   Scanner scanner;
+
 
   /**
    * Public constructor for the controller.
@@ -49,10 +54,8 @@ public abstract class AbstractController implements IController {
    */
   protected void examineGainLoss(Scanner sc) throws IOException {
     this.view.examineGLStart();
-
     ///checks to see ticker is vaild
     String ticker = this.checkStock(sc);
-
     //checks to see if beginning date is vaild
     boolean vaildStartDate = false;
     while (!vaildStartDate) {
@@ -73,27 +76,51 @@ public abstract class AbstractController implements IController {
    * Determines if a ticker is vaild if not makes user retype in ticker symbol.
    *
    * @param sc represents the scanner used to detect the next input.
-   * @return a String representing the model.Stock's ticker.
+   * @return a String representing the Stock's ticker.
    * @throws IOException if the input/output source is missing.
    */
   protected String checkStock(Scanner sc) throws IOException {
     boolean vaildStock = false;
-    String result = "";
+    String ticker = "";
     while (!vaildStock) {
       try {
+        if (ticker.equals("stop")) {
+          throw new IllegalArgumentException("The goal list is finished");
+        }
         this.view.enterTickerName();
-        result = String
-                .valueOf(this.model.findTicker(String.valueOf(sc.next())
-                                .toUpperCase())
-                        .getTicker());
+        ticker = sc.next();
+        System.out.println(ticker);
+        this.model.findTicker(ticker);
         vaildStock = true;
-      } catch (IllegalArgumentException e) {
+      } catch (IOException e) {
         this.view.notInSystemTicker();
+      } catch (IllegalArgumentException e){
+        this.view.notInSystemTicker();
+        System.out.println("here now");
       }
     }
-    return result;
+    return ticker;
   }
 
+
+  protected String checkPortfolio(Scanner sc) throws IOException {
+    boolean vaildPortfolio = false;
+    String name = "";
+    while (!vaildPortfolio) {
+      try {
+        String portfolioListStr = this.formatListString(this.model.getPortfolioList());
+        this.view.showExistingPorfolios(portfolioListStr);
+        this.view.enterPortfolioName();
+        name = sc.next();
+        doesPortfolioExist(sc, name,this.model.getPortfolioList());
+        vaildPortfolio = true;
+        break;
+      } catch (IllegalArgumentException e) {
+        this.view.tryAgain();;
+      }
+    }
+    return name;
+  }
 
   /**
    * Used to allow the user to examine the gain loss of a stock if
@@ -101,9 +128,10 @@ public abstract class AbstractController implements IController {
    *
    * @param sc          represents the scanner used to detect the next input.
    * @param earlierDate is the earlier date in the range they are examining.
-   * @param ticker      represents the ticker of a model.Stock.
+   * @param ticker      represents the ticker of a Stock.
    * @throws IOException if the input/output source is missing.
    */
+  //todo at the say kind of cath ehre as you did for date
   protected void examineGLLater(Scanner sc, LocalDate earlierDate, String ticker)
           throws IOException {
     boolean vaildEndDate = false;
@@ -179,11 +207,11 @@ public abstract class AbstractController implements IController {
    *
    * @throws IOException if the input/output is missing.
    */
-  protected void examineStocksMenu() throws IOException {
+  protected void examineStocksMenu(Scanner sc) throws IOException {
     boolean goToMenu = false;
-    while (!goToMenu) {
+    while ((!goToMenu && !this.quit)) {
       this.view.examineStocks();
-      String input = scanner.next();
+      String input = sc.next();
       switch (input) {
         case "menu":
           goToMenu = true;
@@ -193,13 +221,13 @@ public abstract class AbstractController implements IController {
           this.quit = true;
           break;
         case "1":
-          this.examineGainLoss(scanner);
+          this.examineGainLoss(sc);
           break;
         case "2":
-          this.examineXDayCrossover(scanner);
+          this.examineXDayCrossover(sc);
           break;
         case "3":
-          this.examineXDayMovingAvg(scanner);
+          this.examineXDayMovingAvg(sc);
           break;
         default:
           this.view.undefinedInstructions(input);
@@ -243,11 +271,12 @@ public abstract class AbstractController implements IController {
           throws IOException, ParserConfigurationException, TransformerException {
     //creating portfolio
     String portfolioList = this.formatListString(this.model.getPortfolioList());
+    System.out.println(portfolioList);
     this.view.showExistingPorfolios(portfolioList);
     this.view.makePortfolio();
     String portfolioName = sc.next();
     try {
-      this.model.createPortfolio(portfolioName);
+      this.model.createPortfolio(portfolioName); // why is it skipping ovee thsi
       this.view.portfolioCreated(portfolioName);
     } catch (IllegalArgumentException e) {
       this.view.invalidInput();
@@ -271,12 +300,8 @@ public abstract class AbstractController implements IController {
     this.editingPortfolioMenu(inputEdit, portfolioName);
   }
 
-
   protected abstract void editingPortfolioMenu(String inputEdit, String portfolioName)
           throws IOException;
-
-
-  //
 
   /**
    * Allows a user to interact with the creation/editing portfolio menu.
@@ -287,17 +312,17 @@ public abstract class AbstractController implements IController {
    * @throws ParserConfigurationException if the file used parse existing portfolios is misisng.
    * @throws TransformerException if there is a missing path or configuration problems.
    */
-  public void createPortfolioMenu() throws IOException, ParserConfigurationException,
+
+
+  public void createPortfolioMenu(Scanner sc) throws IOException, ParserConfigurationException,
           TransformerException {
-    //Scanner sc = new Scanner(readable);
     List<String> portfolioList = this.model.getPortfolioList();
     boolean goToMenu = false;
-    while (!goToMenu) {
+    String input = sc.next();
+    while ((!goToMenu && !this.quit)) {
       this.view.cePortolio();
-      String input = scanner.next();
       switch (input) {
         case "quit":
-          this.view.farewellMessage();
           this.quit = true;
           break;
         case "menu":
@@ -318,6 +343,8 @@ public abstract class AbstractController implements IController {
       }
     }
   }
+
+
 
   //determines value of a portfolio based on the type of portfolio
   protected abstract void examinePortfolioValue(Scanner scanner, List<String> portfolioList)
@@ -352,20 +379,33 @@ public abstract class AbstractController implements IController {
     String year = "";
     String finalDate = "";
     boolean validYear = false;
+    boolean quit = false;
     while (!validYear) {
       try {
         this.view.year();
         year = sc.next();
+        if (year.equals("quit")) {
+          validYear = true;
+          this.view.heading();
+          finalDate = "";
+          throw new NoSuchElementException();
+        }
         finalDate = year + "-" + String.format("%02d", Integer.parseInt("12")) + "-"
                 + String.format("%02d", Integer.parseInt("01"));
         this.formatDate(finalDate);
+        finalDate = this.monthBuilder(year, sc);
         validYear = true;
-      } catch (IllegalArgumentException | DateTimeParseException e) {
+      } catch (IllegalArgumentException | DateTimeParseException e ) {
         this.view.invaildDate("year");
+      } catch (NoSuchElementException e) {
+        this.view.farewellMessage();
       }
     }
-    return finalDate = this.monthBuilder(year, sc);
+    return finalDate;
   }
+
+
+
 
 
   /**
@@ -384,17 +424,25 @@ public abstract class AbstractController implements IController {
       try {
         this.view.month();
         month = sc.next();
+        if (month.equals("quit")) {
+          this.view.farewellMessage();
+          finalDate = "";
+          throw new NoSuchElementException();
+        }
         finalDate = year + "-" + String.format("%02d", Integer.parseInt(month)) + "-"
                 + String.format("%02d", Integer.parseInt("01"));
         this.formatDate(finalDate);
         validMonth = true;
+        finalDate = this.dayBuilder(month, year, sc);
       } catch (IllegalArgumentException | DateTimeParseException e) {
         this.view.invaildDate("month");
+      } catch (NoSuchElementException e) {
+        this.view.farewellMessage();
       }
     }
-    finalDate = this.dayBuilder(month, year, sc);
     return finalDate;
   }
+
 
   /**
    * Allows users to input the day and if inputted incorrectly allows them to
@@ -412,6 +460,11 @@ public abstract class AbstractController implements IController {
       try {
         this.view.day();
         String day = sc.next();
+        if (day.equals("quit")) {
+          this.view.heading();
+          finalDate = "";
+          throw new NoSuchElementException();
+        }
         finalDate = year + "-" + String.format("%02d", Integer.parseInt(month)) + "-"
                 + String.format("%02d", Integer.parseInt(day));
         this.formatDate(finalDate); // Validate full date
@@ -423,20 +476,19 @@ public abstract class AbstractController implements IController {
     return finalDate;
   }
 
+
   /**
    * Verifies that the portfolio name the user provides already exists before editing.
-   * @param sc represents a scanner.
    * @param portfolioName represents the name of the portfolio.
    * @param portfolioList represents the list of currently existing portfolios.
    * @throws IOException if the input/output is missing.
    */
   protected void doesPortfolioExist(Scanner sc, String portfolioName, List<String>
           portfolioList) throws IOException {
-    if (!portfolioList.contains(portfolioName)) {
+    if (!portfolioList.contains(portfolioName)) { //todo why is it saying the portfolioList size is 0
       this.view.portfolioError(portfolioList.size());
       throw new IllegalArgumentException("Invalid portfolio name");
     }
   }
 
 }
-

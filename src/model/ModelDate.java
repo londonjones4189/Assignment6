@@ -157,8 +157,8 @@ public class ModelDate extends ModelImpl implements IModelMax {
     }
 
     for (Pair<String, Double> p : lop) {
-      stocks = stocks + " " + (numberCount) + ".)" + p.getLeft();
-      value = value + " " + (numberCount) + ".)" + (p.getRight());
+      stocks = stocks + ", "+ p.getLeft();
+      value = value + ", "  + (p.getRight());
       numberCount++;
     }
     return new Pair<String, String>(stocks, value);

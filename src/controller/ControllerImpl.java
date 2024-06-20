@@ -19,7 +19,6 @@ import view.IView;
  * to the view to be printed to a text-based interface.
  */
 public class ControllerImpl extends AbstractController {
-  ;
   private boolean quit;
   private Scanner scanner;
 
@@ -34,9 +33,8 @@ public class ControllerImpl extends AbstractController {
    */
   public ControllerImpl(Readable readable, IModel model, IView view) throws IOException {
     super(readable, model, view);
+    this.scanner = new Scanner(readable);
   }
-
-
   @Override
   public void startProgram() throws IOException, ParserConfigurationException,
           TransformerException {
@@ -46,14 +44,15 @@ public class ControllerImpl extends AbstractController {
     while (!this.quit) {
       this.view.printMenu();
       String input = scanner.next();
+      ; //in methods quits
       switch (input.toLowerCase()) {
         case "1":
           // allow the user to examine individual stocks
-          this.examineStocksMenu();
+          this.examineStocksMenu(scanner);
           break;
         case "2":
           // allow the user to create a portfolio
-          this.createPortfolioMenu();
+          this.createPortfolioMenu(scanner);
           break;
         case "quit":
           // allow the user to quit the program
@@ -65,7 +64,7 @@ public class ControllerImpl extends AbstractController {
           this.view.printMenu();
           break;
         default:
-          //error due to unrecognized instruction
+          // error due to unrecognized instruction
           this.view.undefinedInstructions(input);
       }
     }
@@ -84,14 +83,16 @@ public class ControllerImpl extends AbstractController {
       case "2":
         this.removeSharesFromPortfolio(sc, portfolioName);
         break;
+      case "quit":
+        this.quit = true;
+        break;
       default:
         this.view.undefinedInstructions(input);
         break;
     }
   }
 
-  @Override
-  protected void editPortfolio(Scanner sc, List<String> portfolioList) throws IOException {
+  protected void menuportfolio(Scanner sc, List<String> portfolioList) throws IOException {
     String portfolioListStr = this.formatListString(this.model.getPortfolioList());
     this.view.showExistingPorfolios(portfolioListStr);
     this.view.editingExistingPortfolio();
@@ -141,7 +142,7 @@ public class ControllerImpl extends AbstractController {
     this.view.showExistingPorfolios(portfolioListStr);
     this.view.enterPortfolioName();
     String portfolioName = sc.next();
-    this.doesPortfolioExist(sc, portfolioName, portfolioList);
+    this.doesPortfolioExist(sc,portfolioName, portfolioList);
     String dateStr = this.dateBuilder(sc);
     LocalDate date = this.formatDate(dateStr);
     this.view.printResults("examineGL", this.model.getValue(portfolioName, date), 0);

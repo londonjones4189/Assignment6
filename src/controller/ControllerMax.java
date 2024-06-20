@@ -107,7 +107,7 @@ public class ControllerMax extends ControllerImpl {
       switch (input.toLowerCase()) {
         case "1":
           // allow the user to examine individual stocks
-          this.examineStocksMenu();
+          this.examineStocksMenu(scanner);
           break;
         case "2":
           // allow the user to create a portfolio
@@ -176,7 +176,7 @@ public class ControllerMax extends ControllerImpl {
         try {
           ///checks to see ticker is vaild
           this.view.enterPortfolioName();
-          String name = scanner.next();
+          String name = this.checkPortfolio(sc);
           //checks to see if beginning date is vaild
           boolean vaildStartDate = false;
           while (!vaildStartDate) {
@@ -189,7 +189,6 @@ public class ControllerMax extends ControllerImpl {
               this.view.examineEnterLaterDate();
               String laterDate = this.dateBuilder(sc);
               LocalDate endDate = this.formatDate(laterDate);
-              this.doesPortfolioExist(scanner, name, this.model.getPortfolioList());
               PortfolioGraphStats port = new PortfolioGraphStats(this.model, name,
                       earlierDate, endDate);
               this.view.printChart(port.createGraph() + System.lineSeparator());
@@ -227,18 +226,10 @@ public class ControllerMax extends ControllerImpl {
         // represents selling
         this.view.enterPortfolioName();
         String sellPortfolioName = sc.next();
-        this.doesPortfolioExist(sc, sellPortfolioName, portfolioList);
+        this.doesPortfolioExist(sc,sellPortfolioName, portfolioList);
         this.removeSharesFromPortfolio(sc, sellPortfolioName);
         break;
-      case "4":
-        // represents getting composition
-        this.composition(sc);
-        break;
-      case "5":
-        // represents getting distribution
-        this.distribution(sc);
-        break;
-      case "6":
+      case "3":
         this.rebalance(sc);
         break;
       case "menu":
@@ -267,6 +258,7 @@ public class ControllerMax extends ControllerImpl {
    * @throws ParserConfigurationException if the file being parsed is missing.
    * @throws TransformerException if the path is missing.
    */
+  //todo option 2 of the main create/edit portfolios option
   public void createPortfolioMenu() throws IOException, ParserConfigurationException,
           TransformerException {
     //Scanner sc = new Scanner(readable);
@@ -293,38 +285,51 @@ public class ControllerMax extends ControllerImpl {
         case "3":
           this.examinePortfolioValue(scanner, portfolioList);
           break;
+        case "4":
+          // represents getting composition
+          this.composition(scanner);
+          break;
+        case "5":
+          // represents getting distribution
+          this.distribution(scanner);
+          break;
         default:
           this.view.undefinedInstructions(input);
+          break;
       }
     }
   }
 
 
+  //todo make it so you can't enter in 2 stops of the same name
   //rebalances a given portfolio based on an array List of user's goals
   private void rebalance(Scanner sc) throws IOException {
-    try {
-      this.view.rebalance();
-      Map<String, Double> newGoal = new HashMap<>();
-      this.view.examineEnterDate();
-      String dateStr = this.dateBuilder(scanner);
-      LocalDate date = this.formatDate(dateStr);
-      this.view.enterPortfolioName();
-      String name = sc.next();
-      doesPortfolioExist(sc, name, this.model.getPortfolioList());
-      this.view.goals();
-      while (!(sc.next().equals("stop"))) {
-        String input = sc.next();
+    this.view.rebalance();
+    Map<String, Double> newGoal = new HashMap<>();
+    this.view.examineEnterDate();
+    String dateStr = this.dateBuilder(scanner);
+    LocalDate date = this.formatDate(dateStr);
+    String name = this.checkPortfolio(scanner);
+    this.view.goals();
+    boolean stop = false;
+    System.out.print(this.model.getPortfolioList().toString());
+    try{
+      while (!stop) {
         String ticker = this.checkStock(sc);
+        if (ticker.equals("stop")) {
+          stop = true;
+          this.model.reblance(date, name, newGoal);
+          break;
+        }
         this.view.enterPercent();
         double percen2t = sc.nextDouble();
         newGoal.put(ticker, percen2t);
-        if (input.equals("stop")) {
-          break;
-        }
       }
-      this.model.reblance(date,name, newGoal);
-    } catch (IllegalArgumentException | ParserConfigurationException | TransformerException e) {
+    } catch (IOException | ParserConfigurationException | TransformerException e) {
       this.view.invalidInput();
+    } catch (IllegalArgumentException e) {
+      this.view.heading("Goal List completed");
+      this.view.heading(name + " is now updated");
     }
   }
 
@@ -332,11 +337,7 @@ public class ControllerMax extends ControllerImpl {
   @Override
   protected void examinePortfolioValue(Scanner scanner, List<String> portfolioList)
           throws IOException {
-    String portfolioListStr = this.formatListString(this.model.getPortfolioList());
-    this.view.showExistingPorfolios(portfolioListStr);
-    this.view.enterPortfolioName();
-    String portfolioName = scanner.next();
-    this.doesPortfolioExist(scanner, portfolioName, portfolioList);
+    String portfolioName = this.checkPortfolio(scanner);
     String dateStr = this.dateBuilder(scanner);
     LocalDate date = this.formatDate(dateStr);
     this.view.printResults("value:", this.model.getValue(portfolioName, date), 0);
@@ -355,8 +356,10 @@ public class ControllerMax extends ControllerImpl {
       this.view.sellCreated(ticker2, numShares2);
     } catch (NullPointerException e) {
       this.view.invalidInput();
-    } catch (ParserConfigurationException
-             | TransformerException ignored) {
+    } catch (ParserConfigurationException e) {
+      throw new RuntimeException(e);
+    } catch (TransformerException e) {
+      throw new RuntimeException(e);
     }
   }
 
@@ -370,12 +373,12 @@ public class ControllerMax extends ControllerImpl {
       String dateStr = this.dateBuilder(scanner);
       LocalDate date = this.formatDate(dateStr);
       this.model.sell(name, ticker2, numShares2, date);
-      // this.view.printResults("Sold",
-      //  , 0);
-    } catch (IllegalArgumentException | IOException
-            | ParserConfigurationException
-             | TransformerException ignored) {
+    } catch (IllegalArgumentException | IOException e) {
       this.view.invalidInput();
+    } catch (ParserConfigurationException e) {
+      throw new RuntimeException(e);
+    } catch (TransformerException e) {
+      throw new RuntimeException(e);
     }
   }
 }

@@ -97,7 +97,7 @@ public interface IModel {
    * @return a model.Stock with the given ticker.
    * @throws IllegalArgumentException if ticker is not supported by the program or the API.
    */
-  Stock findTicker(String ticker) throws IllegalArgumentException;
+  Stock findTicker(String ticker) throws IllegalArgumentException, IOException;
 
   /**
    * Returns a portfolio that is represented by the given portfolio name.
