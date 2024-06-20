@@ -59,9 +59,9 @@ public class ControllerGUI implements ActionListener, IController {
         System.out.println("Enter Portfolio");
         if (this.nameExists()) {
           this.currentPortfolio = this.view.getNameString();
+          this.view.stopListeningPortfolio(this);
           if (this.currentFuction.equals("Portfolio Value")
                   || this.currentFuction.equals("Portfolio Composition") ) {
-            this.view.stopListeningPortfolio(this);
             this.view.showDate(this.model.findPortfolio(this.currentPortfolio).getDatesInLog(),
                     this.currentFuction);
             this.view.setListenerCompute(this);

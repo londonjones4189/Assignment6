@@ -94,10 +94,10 @@ public class ModelImpl implements IModel {
       HashMap<LocalDate, List<Transaction>> log = new HashMap<>();
       List<LocalDate> datesInPortfolio = this.datesInSavedPortfolio(document);
       for (LocalDate date : datesInPortfolio) {
-        List<Transaction> transactions = new ArrayList<>();
-        if (this.getTransaction(document, date) != null) {
-          transactions.add(this.getTransaction(document, date));
-        }
+        List<Transaction> transactions = this.getTransaction(document, date);
+//        if (this.getTransaction(document, date) != null) {
+//          transactions.add(this.getTransaction(document, date));
+//        }
         log.put(date, transactions);
       }
       IPortfolioMax portfolio = new PortfolioDate(portfolioName, log);
@@ -117,7 +117,8 @@ public class ModelImpl implements IModel {
   }
 
   // retrieves transactions stored in a saved portfolio
-  private Transaction getTransaction(Document doc, LocalDate date) {
+  private List<Transaction> getTransaction(Document doc, LocalDate date) throws IOException {
+    List<Transaction> transactions = new ArrayList<>();
     Element root = doc.getDocumentElement();
     NodeList transDateList = root.getElementsByTagName("transDate");
     for (int i = 0; i < transDateList.getLength(); i++) {
@@ -138,14 +139,30 @@ public class ModelImpl implements IModel {
                 numShares = childElement.getAttribute("numShares");
               }
             }
-            if (ticker != null && numShares != null) {
-              return new Transaction(this.findTicker(ticker), Double.parseDouble(numShares));
+            if (ticker != null && numShares != null ) {
+              if (transactions.isEmpty()) {
+                transactions.add(new Transaction(this.findTicker(ticker), Double.parseDouble(numShares)));
+              } else {
+                if (!this.alreadyContains(transactions, ticker)) {
+                  transactions.add(new Transaction(this.findTicker(ticker), Double.parseDouble(numShares)));
+                }
+              }
             }
           }
         }
       }
     }
-    return null;
+    return transactions;
+  }
+
+  private boolean alreadyContains(List<Transaction> transactions, String ticker) {
+    for (Transaction trans : transactions) {
+      if (trans.getTicker().equals(ticker)) {
+        return true;
+      }
+//        transactions.add(new Transaction(this.findTicker(ticker), Double.parseDouble(numShares)));
+    }
+    return false;
   }
 
   // retrieves a list of dates saved in the portfolio

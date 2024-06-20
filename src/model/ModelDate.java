@@ -113,7 +113,7 @@ public class ModelDate extends ModelImpl implements IModelMax {
     Stock stock = findTicker(ticker);
     IPortfolioMax newPort = portfolio.addStockNew(date, stock, numShares);
     newPort.generatePortfolioXML();
-    portfolios.put(portfolioname, newPort);
+    this.portfolios.put(portfolioname, newPort);
   }
 
 
