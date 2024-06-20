@@ -2,6 +2,7 @@ package model;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -217,6 +218,13 @@ public class ModelDate extends ModelImpl implements IModelMax {
       throw new IllegalArgumentException("Portfolio " + name + " not found");
     }
     return portfolios.get(name);
+  }
+
+  public String getValue(String portfolioName, LocalDate date) {
+    DecimalFormat df = new DecimalFormat("0.00");
+    IPortfolioMax portfolio = (IPortfolioMax) this.findPortfolio(portfolioName);
+    double result = portfolio.getPortfolioValue(date); //rename for portfolio
+    return "$" + df.format(result);
   }
 }
 

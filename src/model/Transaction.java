@@ -10,7 +10,10 @@ public class Transaction {
   private final Stock stock;
   private final double numShares;
 
-  Transaction(Stock stock, double numShares) {
+  Transaction(Stock stock, double numShares) throws IllegalArgumentException {
+    if (stock == null || numShares < 0) {
+      throw new IllegalArgumentException("Stock and numShares must be non-negative and exist");
+    }
     this.stock = stock;
     this.numShares = numShares;
   }
