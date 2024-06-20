@@ -150,16 +150,13 @@ public class ModelDate extends ModelImpl implements IModelMax {
   private Pair<String, String> listMaker(ArrayList<Pair<String, Double>> lop) {
     String stocks = "";
     String value = "";
-    int numberCount = 1;
 
     if (lop.size() < 0) {
       //question
     }
-
     for (Pair<String, Double> p : lop) {
       stocks = stocks + ", "+ p.getLeft();
-      value = value + ", "  + (p.getRight());
-      numberCount++;
+      value = value + ", "  + p.getRight();
     }
     return new Pair<String, String>(stocks, value);
   }

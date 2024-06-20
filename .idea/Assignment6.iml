@@ -18,5 +18,6 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="J2EE 1.4-J2EE 1.4" level="project" />
   </component>
 </module>
